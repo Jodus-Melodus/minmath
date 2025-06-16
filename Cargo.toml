@@ -1,0 +1,9 @@
+[package]
+name = "minmath"
+version = "0.1.0"
+edition = "2024"
+description = "A lightweight math library"
+license = "MIT"
+repository = "https://github.com/Jodus-Melodus/minmath"
+
+[dependencies]
