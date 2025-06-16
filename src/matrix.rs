@@ -6,7 +6,13 @@ use std::{
 
 pub struct Matrix<T, const ROWS: usize, const COLUMNS: usize>
 where
-    T: Add<Output = T> + Sub<Output = T> + Mul<Output = T> + Div<Output = T> + Copy + Debug,
+    T: Add<Output = T>
+        + Sub<Output = T>
+        + Mul<Output = T>
+        + Div<Output = T>
+        + Copy
+        + Debug
+        + Default,
 {
     data: [[T; COLUMNS]; ROWS],
 }
@@ -22,10 +28,15 @@ where
         + Div<Output = T>
         + DivAssign
         + Copy
-        + Debug,
+        + Debug
+        + Default,
 {
     pub fn new(data: [[T; COLUMNS]; ROWS]) -> Self {
         Self { data }
+    }
+
+    pub fn size(&self) -> (usize, usize) {
+        (ROWS, COLUMNS)
     }
 }
 
@@ -40,7 +51,8 @@ where
         + Div<Output = T>
         + DivAssign
         + Copy
-        + Debug,
+        + Debug
+        + Default,
 {
     type Output = Self;
     fn add(self, rhs: Self) -> Self::Output {
@@ -61,7 +73,8 @@ where
         + Div<Output = T>
         + DivAssign
         + Copy
-        + Debug,
+        + Debug
+        + Default,
 {
     type Output = Self;
     fn add(self, rhs: T) -> Self::Output {
@@ -82,7 +95,8 @@ where
         + Div<Output = T>
         + DivAssign
         + Copy
-        + Debug,
+        + Debug
+        + Default,
 {
     fn add_assign(&mut self, rhs: Self) {
         for r in 0..ROWS {
@@ -104,7 +118,8 @@ where
         + Div<Output = T>
         + DivAssign
         + Copy
-        + Debug,
+        + Debug
+        + Default,
 {
     fn add_assign(&mut self, rhs: T) {
         for r in 0..ROWS {
@@ -126,7 +141,8 @@ where
         + Div<Output = T>
         + DivAssign
         + Copy
-        + Debug,
+        + Debug
+        + Default,
 {
     type Output = Self;
     fn sub(self, rhs: Self) -> Self::Output {
@@ -147,7 +163,8 @@ where
         + Div<Output = T>
         + DivAssign
         + Copy
-        + Debug,
+        + Debug
+        + Default,
 {
     type Output = Self;
     fn sub(self, rhs: T) -> Self::Output {
@@ -168,7 +185,8 @@ where
         + Div<Output = T>
         + DivAssign
         + Copy
-        + Debug,
+        + Debug
+        + Default,
 {
     fn sub_assign(&mut self, rhs: Self) {
         for r in 0..ROWS {
@@ -190,12 +208,136 @@ where
         + Div<Output = T>
         + DivAssign
         + Copy
-        + Debug,
+        + Debug
+        + Default,
 {
     fn sub_assign(&mut self, rhs: T) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
                 self.data[r][c] -= rhs;
+            }
+        }
+    }
+}
+
+impl<T, const LROWS: usize, const LCOLUMNS: usize, const RROWS: usize, const RCOLUMNS: usize>
+    Mul<Matrix<T, RROWS, RCOLUMNS>> for Matrix<T, LROWS, LCOLUMNS>
+where
+    T: Add<Output = T>
+        + AddAssign
+        + Sub<Output = T>
+        + SubAssign
+        + Mul<Output = T>
+        + MulAssign
+        + Div<Output = T>
+        + DivAssign
+        + Copy
+        + Debug
+        + Default,
+{
+    type Output = Matrix<T, LROWS, RCOLUMNS>;
+    fn mul(self, rhs: Matrix<T, RROWS, RCOLUMNS>) -> Self::Output {
+        assert_eq!(LCOLUMNS, RROWS);
+
+        let mut data = [[T::default(); RCOLUMNS]; LROWS];
+
+        for i in 0..LROWS {
+            for j in 0..RCOLUMNS {
+                let mut sum = T::default();
+                for k in 0..LCOLUMNS {
+                    sum = sum + (self.data[i][k] * rhs.data[k][j]);
+                }
+                data[i][j] = sum;
+            }
+        }
+
+        Matrix { data }
+    }
+}
+
+impl<T, const ROWS: usize, const COLUMNS: usize> Mul<T> for Matrix<T, ROWS, COLUMNS>
+where
+    T: Add<Output = T>
+        + AddAssign
+        + Sub<Output = T>
+        + SubAssign
+        + Mul<Output = T>
+        + MulAssign
+        + Div<Output = T>
+        + DivAssign
+        + Copy
+        + Debug
+        + Default,
+{
+    type Output = Self;
+    fn mul(self, rhs: T) -> Self::Output {
+        let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] * rhs));
+
+        Self { data }
+    }
+}
+impl<T, const ROWS: usize, const COLUMNS: usize> MulAssign<T> for Matrix<T, ROWS, COLUMNS>
+where
+    T: Add<Output = T>
+        + AddAssign
+        + Sub<Output = T>
+        + SubAssign
+        + Mul<Output = T>
+        + MulAssign
+        + Div<Output = T>
+        + DivAssign
+        + Copy
+        + Debug
+        + Default,
+{
+    fn mul_assign(&mut self, rhs: T) {
+        for r in 0..ROWS {
+            for c in 0..COLUMNS {
+                self.data[r][c] *= rhs;
+            }
+        }
+    }
+}
+
+impl<T, const ROWS: usize, const COLUMNS: usize> Div<T> for Matrix<T, ROWS, COLUMNS>
+where
+    T: Add<Output = T>
+        + AddAssign
+        + Sub<Output = T>
+        + SubAssign
+        + Mul<Output = T>
+        + MulAssign
+        + Div<Output = T>
+        + DivAssign
+        + Copy
+        + Debug
+        + Default,
+{
+    type Output = Self;
+    fn div(self, rhs: T) -> Self::Output {
+        let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] / rhs));
+
+        Self { data }
+    }
+}
+impl<T, const ROWS: usize, const COLUMNS: usize> DivAssign<T> for Matrix<T, ROWS, COLUMNS>
+where
+    T: Add<Output = T>
+        + AddAssign
+        + Sub<Output = T>
+        + SubAssign
+        + Mul<Output = T>
+        + MulAssign
+        + Div<Output = T>
+        + DivAssign
+        + Copy
+        + Debug
+        + Default,
+{
+    fn div_assign(&mut self, rhs: T) {
+        for r in 0..ROWS {
+            for c in 0..COLUMNS {
+                self.data[r][c] /= rhs;
             }
         }
     }
@@ -212,7 +354,8 @@ where
         + Div<Output = T>
         + DivAssign
         + Copy
-        + Debug,
+        + Debug
+        + Default,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(f, "Matrix ({}x{}):", ROWS, COLUMNS)?;
@@ -237,7 +380,8 @@ where
         + Div<Output = T>
         + DivAssign
         + Copy
-        + Debug,
+        + Debug
+        + Default,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(f, "Matrix ({}x{}):", ROWS, COLUMNS)?;
