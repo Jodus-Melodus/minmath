@@ -1,14 +1,13 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+pub mod matrix;
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::matrix::Matrix;
 
     #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    fn test_initialization() {
+        let matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
+
+        println!("{}", matrix);
     }
 }
