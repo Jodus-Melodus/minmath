@@ -2,8 +2,6 @@ pub mod matrix;
 
 #[cfg(test)]
 mod tests {
-    use std::process::id;
-
     use crate::matrix::Matrix;
 
     #[test]

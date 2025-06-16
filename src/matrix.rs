@@ -2,6 +2,7 @@ use std::{
     array,
     fmt::{Debug, Display},
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
+    usize,
 };
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -38,6 +39,25 @@ where
 
     pub fn size(&self) -> (usize, usize) {
         (ROWS, COLUMNS)
+    }
+}
+
+impl<T> Matrix<T, 2, 2>
+where
+    T: Add<Output = T>
+        + AddAssign
+        + Sub<Output = T>
+        + SubAssign
+        + Mul<Output = T>
+        + MulAssign
+        + Div<Output = T>
+        + DivAssign
+        + Copy
+        + Debug
+        + Default,
+{
+    pub fn determinant(&self) -> T {
+        self.data[0][0] * self.data[1][1] - self.data[1][0] * self.data[0][1]
     }
 }
 
