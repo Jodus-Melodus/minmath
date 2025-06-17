@@ -1,7 +1,12 @@
 # minmath
+[![GitHub stars](https://img.shields.io/github/stars/Jodus-Melodus/minmath)](https://github.com/Jodus-Melodus/minmath/stargazers)
+[![GitHub license](https://img.shields.io/github/license/Jodus-Melodus/minmath)](https://github.com/Jodus-Melodus/minmath/blob/main/LICENSE)
 
-- [Crates.io](https://crates.io/crates/minmath)
-- [GitHub](https://github.com/Jodus-Melodus/minmath)
+[![Crates.io](https://img.shields.io/crates/v/minmath.svg)](https://crates.io/crates/minmath)
+[![Crates.io downloads](https://img.shields.io/crates/d/minmath.svg)](https://crates.io/crates/minmath)
+[![Docs.rs](https://docs.rs/minmath/badge.svg)](https://docs.rs/minmath)
+
+[![Rust Version](https://img.shields.io/badge/rust-1.70%2B-blue)](https://www.rust-lang.org/)
 
 ## Quick start example
 
@@ -46,6 +51,14 @@ cargo add minmath
 
 ### Matrix
 
+## Features
+
+- Generic matrix type with const generics for size
+- Operator overloading for arithmetic
+- Matrix multiplication for square and non-square matrices
+- Determinant calculation (2x2 only for now)
+- Debug and Display formatting
+
 The following are derived for the Matrix structure.
 ```rust
 Clone
@@ -54,7 +67,7 @@ PartialEq
 Eq
 ```
 
-When a matrix is declared the type and size (rows and columns) are implicitly derived. The type should implement the following traits.
+When a matrix is declared, its type and size (rows and columns) are specified as generic parameters. The type should implement the following traits.
 
 ```rust
 Add<Output = T>
@@ -72,7 +85,7 @@ Default
 #### Functions
 
 ```rust
-fn new(data: [[T; COLUMNS]; ROWS]) -> Matrix
+fn new(data: [[T; COLUMNS]; ROWS]) -> Matrix<T, ROWS, COLUMNS>
 ```
 - Creates a new matrix of type T and size (ROWS, COLUMNS) from the provided 2D array.
 
@@ -86,7 +99,7 @@ let matrix: Matrix<i32, 3, 3> = Matrix::new([
 ```
 
 ```rust
-fn size() -> (usize, usize)
+fn size(&self) -> (usize, usize)
 ```
 - Returns the size of the matrix as (rows, columns).
 
@@ -100,7 +113,7 @@ let size: (usize, usize) = matrix.size();
 ```
 
 ```rust
-fn determinant() -> T
+fn determinant(&self) -> T
 ```
 - Returns the determinant of the matrix (only works for 2x2 at the moment).
 
@@ -145,3 +158,9 @@ Display
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+## Links
+
+- [Crates.io](https://crates.io/crates/minmath)
+- [Documentation (docs.rs)](https://docs.rs/minmath)
+- [GitHub Repository](https://github.com/Jodus-Melodus/minmath)
