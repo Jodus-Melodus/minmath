@@ -2,8 +2,9 @@ use std::{
     array,
     fmt::{Debug, Display},
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
-    usize,
 };
+
+use crate::vector::Vector;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub struct Matrix<T, const ROWS: usize, const COLUMNS: usize>
@@ -14,6 +15,7 @@ where
         + Div<Output = T>
         + Copy
         + Debug
+        + Display
         + Default,
 {
     data: [[T; COLUMNS]; ROWS],
@@ -31,6 +33,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     pub fn new(data: [[T; COLUMNS]; ROWS]) -> Self {
@@ -39,6 +42,21 @@ where
 
     pub fn size(&self) -> (usize, usize) {
         (ROWS, COLUMNS)
+    }
+
+    pub fn to_vector(&self) -> Vector<T, ROWS> {
+        assert_eq!(
+            COLUMNS, 1,
+            "Can only convert a single column matrix to a vector"
+        );
+
+        let mut data = [T::default(); ROWS];
+
+        for i in 0..ROWS {
+            data[i] = self.data[i][0];
+        }
+
+        Vector::new(data)
     }
 }
 
@@ -54,6 +72,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     pub fn determinant(&self) -> T {
@@ -73,6 +92,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     type Output = Self;
@@ -95,6 +115,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     type Output = Self;
@@ -117,6 +138,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     fn add_assign(&mut self, rhs: Self) {
@@ -140,6 +162,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     fn add_assign(&mut self, rhs: T) {
@@ -163,6 +186,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     type Output = Self;
@@ -185,6 +209,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     type Output = Self;
@@ -207,6 +232,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     fn sub_assign(&mut self, rhs: Self) {
@@ -230,6 +256,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     fn sub_assign(&mut self, rhs: T) {
@@ -254,6 +281,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     type Output = Matrix<T, LROWS, RCOLUMNS>;
@@ -288,6 +316,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     type Output = Self;
@@ -309,6 +338,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     fn mul_assign(&mut self, rhs: T) {
@@ -332,6 +362,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     type Output = Self;
@@ -353,6 +384,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     fn div_assign(&mut self, rhs: T) {
@@ -376,6 +408,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -402,6 +435,7 @@ where
         + DivAssign
         + Copy
         + Debug
+        + Display
         + Default,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {

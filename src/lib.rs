@@ -1,8 +1,9 @@
 pub mod matrix;
+pub mod vector;
 
 #[cfg(test)]
-mod tests {
-    use crate::matrix::Matrix;
+mod matrix_tests {
+    use crate::{matrix::Matrix, vector::Vector};
 
     #[test]
     fn test_initialization() {
@@ -17,6 +18,19 @@ mod tests {
         let (rows, columns) = matrix.size();
 
         assert!(rows == 3 && columns == 3);
+    }
+
+    #[test]
+    fn test_conversion() {
+        let matrix = Matrix::new([[4], [0], [-3]]);
+        let vector = Vector::new([4, 0, -3]);
+        let vector_result = matrix.to_vector();
+
+        println!("{}", vector);
+        println!("{}", vector_result);
+        println!("hello");
+
+        assert_eq!(vector, vector_result);
     }
 
     #[test]
@@ -170,5 +184,37 @@ mod tests {
         let a = Matrix::new([[5, 7], [6, 8]]);
         let identity = Matrix::new([[1, 0], [0, 1]]);
         assert_eq!(a * identity, a);
+    }
+}
+
+#[cfg(test)]
+mod vector_tests {
+    use crate::{matrix::Matrix, vector::Vector};
+
+    #[test]
+    fn test_initialization() {
+        let vec = Vector::new([4, -3, 2]);
+
+        println!("{}", vec);
+    }
+
+    #[test]
+    fn test_size() {
+        let vec1 = Vector::new([4]);
+        let vec2 = Vector::new([4, -5]);
+        let vec3 = Vector::new([9, 2, -1]);
+
+        assert_eq!(vec1.size(), 1);
+        assert_eq!(vec2.size(), 2);
+        assert_eq!(vec3.size(), 3);
+    }
+
+    #[test]
+    fn test_conversion() {
+        let vector = Vector::new([5, -3, 2]);
+        let matrix = Matrix::new([[5], [-3], [2]]);
+        let matrix_result = vector.to_matrix();
+
+        assert_eq!(matrix, matrix_result);
     }
 }
