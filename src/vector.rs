@@ -52,6 +52,38 @@ where
 
         Matrix::new(data)
     }
+
+    pub fn dot(&self, rhs: Self) -> T {
+        let mut result = T::default();
+        for i in 0..SIZE {
+            result += self.data[i] * rhs.data[i];
+        }
+        result
+    }
+}
+
+impl<T> Vector<T, 3>
+where
+    T: Add<Output = T>
+        + AddAssign
+        + Sub<Output = T>
+        + SubAssign
+        + Mul<Output = T>
+        + MulAssign
+        + Div<Output = T>
+        + DivAssign
+        + Copy
+        + Debug
+        + Display
+        + Default,
+{
+    pub fn cross(&self, rhs: Self) -> Self {
+        Vector::new([
+            self.data[1] * rhs.data[2] - self.data[2] * rhs.data[1],
+            self.data[2] * rhs.data[0] - self.data[0] * rhs.data[2],
+            self.data[0] * rhs.data[1] - self.data[1] * rhs.data[0],
+        ])
+    }
 }
 
 impl<T, const SIZE: usize> Add for Vector<T, SIZE>

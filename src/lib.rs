@@ -281,7 +281,7 @@ mod vector_tests {
         let mut vec1 = Vector::new([3, -3, 9]);
         vec1 *= 3;
 
-        assert_eq!(vec1, Vector::new([-9, 27, 6]));
+        assert_eq!(vec1, Vector::new([9, -9, 27]));
     }
 
     #[test]
@@ -297,6 +297,22 @@ mod vector_tests {
         let mut vec1 = Vector::new([3, -3, 9]);
         vec1 /= 3;
 
-        assert_eq!(vec1, Vector::new([-1, 3, 2 / 3]));
+        assert_eq!(vec1, Vector::new([1, -1, 3]));
+    }
+
+    #[test]
+    fn test_vector_dot_product() {
+        let vec1 = Vector::new([1, 2, 3]);
+        let vec2 = Vector::new([4, 5, 6]);
+
+        assert_eq!(vec1.dot(vec2), 32);
+    }
+
+    #[test]
+    fn test_vector_cross_product() {
+        let vec1 = Vector::new([1, 2, 3]);
+        let vec2 = Vector::new([4, 5, 6]);
+
+        assert_eq!(vec1.cross(vec2), Vector::new([-3, 6, -3]));
     }
 }
