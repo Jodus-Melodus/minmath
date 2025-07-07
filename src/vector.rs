@@ -73,7 +73,7 @@ where
     fn add(self, rhs: Self) -> Self::Output {
         let mut result = self.data;
         for i in 0..SIZE {
-            result[i] = self.data[i] + rhs.data[i];
+            result[i] += rhs.data[i];
         }
         Vector::new(result)
     }
@@ -121,7 +121,7 @@ where
 {
     fn add_assign(&mut self, rhs: Self) {
         for i in 0..SIZE {
-            self.data[i] = self.data[i] + rhs.data[i];
+            self.data[i] += rhs.data[i];
         }
     }
 }
@@ -166,7 +166,7 @@ where
     fn sub(self, rhs: Self) -> Self::Output {
         let mut result = self.data;
         for i in 0..SIZE {
-            result[i] = self.data[i] - rhs.data[i];
+            result[i] -= rhs.data[i];
         }
         Vector::new(result)
     }
@@ -214,7 +214,7 @@ where
 {
     fn sub_assign(&mut self, rhs: Self) {
         for i in 0..SIZE {
-            self.data[i] = self.data[i] - rhs.data[i];
+            self.data[i] -= rhs.data[i];
         }
     }
 }
@@ -240,6 +240,101 @@ where
         }
     }
 }
+
+impl<T, const SIZE: usize> Mul<T> for Vector<T, SIZE>
+where
+    T: Add<Output = T>
+        + AddAssign
+        + Sub<Output = T>
+        + SubAssign
+        + Mul<Output = T>
+        + MulAssign
+        + Div<Output = T>
+        + DivAssign
+        + Copy
+        + Debug
+        + Display
+        + Default,
+{
+    type Output = Self;
+    fn mul(self, rhs: T) -> Self::Output {
+        let mut result = self.data;
+        for i in 0..SIZE {
+            result[i] *= rhs;
+        }
+        Vector::new(result)
+    }
+}
+
+impl<T, const SIZE: usize> MulAssign<T> for Vector<T, SIZE>
+where
+    T: Add<Output = T>
+        + AddAssign
+        + Sub<Output = T>
+        + SubAssign
+        + Mul<Output = T>
+        + MulAssign
+        + Div<Output = T>
+        + DivAssign
+        + Copy
+        + Debug
+        + Display
+        + Default,
+{
+    fn mul_assign(&mut self, rhs: T) {
+        for i in 0..SIZE {
+            self.data[i] *= rhs;
+        }
+    }
+}
+
+impl<T, const SIZE: usize> Div<T> for Vector<T, SIZE>
+where
+    T: Add<Output = T>
+        + AddAssign
+        + Sub<Output = T>
+        + SubAssign
+        + Mul<Output = T>
+        + MulAssign
+        + Div<Output = T>
+        + DivAssign
+        + Copy
+        + Debug
+        + Display
+        + Default,
+{
+    type Output = Self;
+    fn div(self, rhs: T) -> Self::Output {
+        let mut result = self.data;
+        for i in 0..SIZE {
+            result[i] /= rhs;
+        }
+        Vector::new(result)
+    }
+}
+
+impl<T, const SIZE: usize> DivAssign<T> for Vector<T, SIZE>
+where
+    T: Add<Output = T>
+        + AddAssign
+        + Sub<Output = T>
+        + SubAssign
+        + Mul<Output = T>
+        + MulAssign
+        + Div<Output = T>
+        + DivAssign
+        + Copy
+        + Debug
+        + Display
+        + Default,
+{
+    fn div_assign(&mut self, rhs: T) {
+        for i in 0..SIZE {
+            self.data[i] /= rhs;
+        }
+    }
+}
+
 impl<T, const SIZE: usize> Debug for Vector<T, SIZE>
 where
     T: Add<Output = T>
