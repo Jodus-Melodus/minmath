@@ -217,4 +217,13 @@ mod vector_tests {
 
         assert_eq!(matrix, matrix_result);
     }
+
+    #[test]
+    fn test_vector_addition() {
+        let vec1 = Vector::new([4, 0, -1]);
+        let vec2 = Vector::new([-3, 2, 0]);
+        let vec3 = vec1 + vec2;
+
+        assert_eq!(vec3, Vector::new([1, 2, -1]));
+    }
 }
