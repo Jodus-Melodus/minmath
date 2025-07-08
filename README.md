@@ -10,14 +10,29 @@
 
 ## Quick start example
 
+### Matrix
+
 ```rust
 use minmath::Matrix;
 
 fn main() {
-    let a = Matrix::new([[1, 2], [3, 4]]);
-    let b = Matrix::new([[5, 6], [7, 8]]);
-    let c = a + b;
-    println!("{:?}", c);
+    let mat1 = Matrix::new([[1, 2], [3, 4]]);
+    let mat2 = Matrix::new([[5, 6], [7, 8]]);
+    let mat3 = mat1 + mat2;
+    println!("{}", mat3);
+}
+```
+
+### Vector
+
+```rust
+use minmath::Vector;
+
+fn main() {
+    let vec1 = Vector::new([4, -3, 0]);
+    let vec2 = Vector::new([0, 3, 2]);
+    let vec3 = vec1 + vec2;
+    prinln!("{}", vec3);
 }
 ```
 
@@ -80,6 +95,7 @@ Div<Output = T>
 DivAssign
 Copy
 Debug
+Display
 Default
 ```
 #### Functions
@@ -156,12 +172,6 @@ let b = Matrix::new([[7, 8], [9, 10], [11, 12]]);
 let c = a * b; // c is Matrix<i32, 2, 2>
 ```
 
-#### Other implementations
-```rust
-Debug
-Display
-```
-
 ### Vector
 
 ## Features
@@ -191,6 +201,7 @@ Div<Output = T>
 DivAssign
 Copy
 Debug
+Display
 Default
 ```
 #### Functions
@@ -259,12 +270,6 @@ let vec1 = Vector::new([1, 2, 3]);
 let vec2 = Vector::new([4, 5, 6]);
 
 let cross_product = vec1.cross(vec2);
-```
-
-#### Other implementations
-```rust
-Debug
-Display
 ```
 
 ## License

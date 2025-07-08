@@ -9,7 +9,7 @@ mod matrix_tests {
     fn test_initialization() {
         let matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
 
-        println!("{}", matrix);
+        dbg!("{}", matrix);
     }
 
     #[test]
@@ -26,9 +26,9 @@ mod matrix_tests {
         let vector = Vector::new([4, 0, -3]);
         let vector_result = matrix.to_vector();
 
-        println!("{}", vector);
-        println!("{}", vector_result);
-        println!("hello");
+        dbg!("{}", vector);
+        dbg!("{}", vector_result);
+        dbg!("hello");
 
         assert_eq!(vector, vector_result);
     }
@@ -195,7 +195,7 @@ mod vector_tests {
     fn test_initialization() {
         let vec = Vector::new([4, -3, 2]);
 
-        println!("{}", vec);
+        dbg!("{}", vec);
     }
 
     #[test]
