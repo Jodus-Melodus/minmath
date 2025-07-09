@@ -6,6 +6,8 @@
 [![Crates.io downloads](https://img.shields.io/crates/d/minmath.svg)](https://crates.io/crates/minmath)
 [![Docs.rs](https://docs.rs/minmath/badge.svg)](https://docs.rs/minmath)
 
+[![Reddit](https://img.shields.io/badge/discuss%20on-Reddit-orange?logo=reddit)](https://www.reddit.com/r/rust/comments/your_post_id)
+
 [![Rust Version](https://img.shields.io/badge/rust-1.70%2B-blue)](https://www.rust-lang.org/)
 
 ## Quick start example
