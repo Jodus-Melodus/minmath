@@ -2,6 +2,8 @@
 [![GitHub stars](https://img.shields.io/github/stars/Jodus-Melodus/minmath)](https://github.com/Jodus-Melodus/minmath/stargazers)
 [![GitHub license](https://img.shields.io/github/license/Jodus-Melodus/minmath)](https://github.com/Jodus-Melodus/minmath/blob/main/LICENSE)
 
+[![Reddit](https://img.shields.io/badge/discuss%20on-Reddit-orange?logo=reddit)](https://www.reddit.com/r/rust/comments/1lvsdvj/i_built_minmath_a_flexible_rust_math_library_to/)
+
 [![Crates.io](https://img.shields.io/crates/v/minmath.svg)](https://crates.io/crates/minmath)
 [![Crates.io downloads](https://img.shields.io/crates/d/minmath.svg)](https://crates.io/crates/minmath)
 [![Docs.rs](https://docs.rs/minmath/badge.svg)](https://docs.rs/minmath)
