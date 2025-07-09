@@ -5,5 +5,6 @@ edition = "2024"
 description = "A lightweight math library"
 license = "MIT"
 repository = "https://github.com/Jodus-Melodus/minmath"
+categories = ["mathematics", "data-structures", "game-development", "science"]
 
 [dependencies]
