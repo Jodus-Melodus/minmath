@@ -58,6 +58,18 @@ where
 
         Vector::new(data)
     }
+
+    pub fn transpose(&self) -> Matrix<T, COLUMNS, ROWS> {
+        let mut transposed = [[T::default(); ROWS]; COLUMNS];
+
+        for r in 0..ROWS {
+            for c in 0..COLUMNS {
+                transposed[c][r] = self.data[r][c];
+            }
+        }
+
+        Matrix::new(transposed)
+    }
 }
 
 impl<T> Matrix<T, 2, 2>
