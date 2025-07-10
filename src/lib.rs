@@ -28,7 +28,6 @@ mod matrix_tests {
 
         dbg!("{}", vector);
         dbg!("{}", vector_result);
-        dbg!("hello");
 
         assert_eq!(vector, vector_result);
     }

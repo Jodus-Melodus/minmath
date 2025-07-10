@@ -383,10 +383,10 @@ where
         + Default,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "Vector {}: [", SIZE)?;
+        writeln!(f, "Vector ({}):", SIZE)?;
         write!(
             f,
-            "{}",
+            "[{}",
             self.data
                 .map(|v| format!("{}", v))
                 .iter()
@@ -415,10 +415,10 @@ where
         + Default,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "Vector {}: [", SIZE)?;
+        writeln!(f, "Vector ({}):", SIZE)?;
         write!(
             f,
-            "{}",
+            "[{}",
             self.data
                 .map(|v| format!("{}", v))
                 .iter()

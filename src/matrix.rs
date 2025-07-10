@@ -47,7 +47,7 @@ where
     pub fn to_vector(&self) -> Vector<T, ROWS> {
         assert_eq!(
             COLUMNS, 1,
-            "Can only convert a single column matrix to a vector"
+            "Incorrect matrix dimension: Matrix should only have one column"
         );
 
         let mut data = [T::default(); ROWS];
@@ -286,7 +286,12 @@ where
 {
     type Output = Matrix<T, LROWS, RCOLUMNS>;
     fn mul(self, rhs: Matrix<T, RROWS, RCOLUMNS>) -> Self::Output {
-        assert_eq!(LCOLUMNS, RROWS);
+        assert_eq!(
+            LCOLUMNS, RROWS,
+            "Matrix dimension mismatch: Expected left matrix with shape (a * b) and right matrix with shape (b * c), \
+             but got shapes (a*{}) and ({}*c).",
+            LCOLUMNS, RROWS
+        );
 
         let mut data = [[T::default(); RCOLUMNS]; LROWS];
 

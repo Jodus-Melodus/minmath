@@ -44,6 +44,7 @@ Contributions, issues, and feature requests are welcome! Feel free to check [iss
 
 ## Adding `minmath` to dependencies
 
+`minmath` currently has zero dependencies and I plan to keep it that way.
 There are two ways to add the crate to your dependencies.
 
 ### Manual
