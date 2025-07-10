@@ -33,6 +33,15 @@ mod matrix_tests {
     }
 
     #[test]
+    fn test_transpose() {
+        let matrix = Matrix::new([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]);
+        let transpose = Matrix::new([[1.0, 4.0], [2.0, 5.0], [3.0, 6.0]]);
+        let transposed = matrix.transpose();
+
+        assert_eq!(transpose, transposed);
+    }
+
+    #[test]
     fn test_scalar_matrix_addition() {
         let matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
         let scalar = 5;
