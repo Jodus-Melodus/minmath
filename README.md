@@ -275,7 +275,7 @@ let cross_product = vec1.cross(vec2);
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE.md) for details.
+This project is licensed under the GNU General Public License. See [LICENSE](LICENSE.md) for details.
 
 ## Links
 
