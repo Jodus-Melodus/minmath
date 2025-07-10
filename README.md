@@ -68,7 +68,7 @@ cargo add minmath
 
 ### Matrix
 
-## Features
+#### Features
 
 - Generic matrix type with const generics for size
 - Operator overloading for arithmetic
@@ -176,7 +176,7 @@ let c = a * b; // c is Matrix<i32, 2, 2>
 
 ### Vector
 
-## Features
+#### Features
 
 - Generic Vector type with const generics for size
 - Operator overloading for arithmetic
@@ -252,9 +252,7 @@ All matrix sizes are supported by the operators (square and non-square).
 | Divide         | ✓ (`/`)     |             |
 | Divide Assign  | ✓ (`/=`)    |             |
 
-#### Vector multiplication
-
-##### Dot procuct
+#### Dot procuct
 
 ```rust
 let vec1 = Vector::new([1, 2, 3]);
@@ -263,7 +261,7 @@ let vec2 = Vector::new([4, 5, 6]);
 let dot_product = vec1.dot(vec2);
 ```
 
-##### Cross procuct
+#### Cross procuct
 
 The cross product is only implemented for 3D vectors.
 
