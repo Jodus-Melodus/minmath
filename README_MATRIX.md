@@ -83,16 +83,6 @@ let matrix = Matrix::new([1, 2, 3]);
 let vector = matrix.to_vector();
 ```
 
-#### Matrix(2x2) Determinant
-
-```rust
-let matrix: Matrix<i32, 2, 2> = Matrix::new([
-    [4, -3],
-    [8, 3],
-]);
-let determinant = matrix.determinant();
-```
-
 ## Operators
 
 All matrix sizes are supported by the operators (square and non-square).
