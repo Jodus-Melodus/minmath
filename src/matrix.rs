@@ -70,10 +70,6 @@ where
 
         Matrix::new(transposed)
     }
-
-    pub fn determinant(&self) -> T {
-        self.data[0][0] * self.data[1][1] - self.data[0][1] * self.data[1][0]
-    }
 }
 
 impl<T> Matrix<T, 2, 2>
