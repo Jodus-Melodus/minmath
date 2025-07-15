@@ -70,6 +70,10 @@ where
 
         Matrix::new(transposed)
     }
+
+    pub fn determinant2x2(&self) -> T {
+        self.data[0][0] * self.data[1][1] - self.data[0][1] * self.data[1][0]
+    }
 }
 
 impl<T> Matrix<T, 2, 2>
@@ -658,5 +662,12 @@ mod matrix_tests {
         let a = Matrix::new([[5, 7], [6, 8]]);
         let identity = Matrix::new([[1, 0], [0, 1]]);
         assert_eq!(a * identity, a);
+    }
+
+    #[test]
+    fn test_matrix_determinant2x2() {
+        let matrix: Matrix<i32, 2, 2> = Matrix::new([[4, -3], [8, 3]]);
+        let determinant = matrix.determinant();
+        assert_eq!(determinant, 36);
     }
 }
