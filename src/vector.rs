@@ -561,4 +561,46 @@ mod vector_tests {
 
         assert_eq!(vec1.cross(vec2), Vector::new([-3, 6, -3]));
     }
+
+    #[test]
+    fn test_vector_rotation_x() {
+        let v = Vector::new([1.0, 2.0, 3.0]);
+        let m = v.to_matrix();
+        let rotated = Matrix::<f32, 3, 3>::rotation_matrix3x3_x(FRAC_PI_2) * m;
+        let result = rotated.to_vector();
+
+        // Rotating (1,2,3) about X by 90°: (1, -3, 2)
+        let expected = Vector::new([1.0, -3.0, 2.0]);
+        assert!((result.data[0] - expected.data[0]).abs() < 1e-6);
+        assert!((result.data[1] - expected.data[1]).abs() < 1e-6);
+        assert!((result.data[2] - expected.data[2]).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_vector_rotation_y() {
+        let v = Vector::new([1.0, 2.0, 3.0]);
+        let m = v.to_matrix();
+        let rotated = Matrix::<f32, 3, 3>::rotation_matrix3x3_y(FRAC_PI_2) * m;
+        let result = rotated.to_vector();
+
+        // Rotating (1,2,3) about Y by 90°: (3, 2, -1)
+        let expected = Vector::new([3.0, 2.0, -1.0]);
+        assert!((result.data[0] - expected.data[0]).abs() < 1e-6);
+        assert!((result.data[1] - expected.data[1]).abs() < 1e-6);
+        assert!((result.data[2] - expected.data[2]).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_vector_rotation_z() {
+        let v = Vector::new([1.0, 2.0, 3.0]);
+        let m = v.to_matrix();
+        let rotated = Matrix::<f32, 3, 3>::rotation_matrix3x3_z(FRAC_PI_2) * m;
+        let result = rotated.to_vector();
+
+        // Rotating (1,2,3) about Z by 90°: (-2, 1, 3)
+        let expected = Vector::new([-2.0, 1.0, 3.0]);
+        assert!((result.data[0] - expected.data[0]).abs() < 1e-6);
+        assert!((result.data[1] - expected.data[1]).abs() < 1e-6);
+        assert!((result.data[2] - expected.data[2]).abs() < 1e-6);
+    }
 }
