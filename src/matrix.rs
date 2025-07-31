@@ -40,6 +40,32 @@ where
         Self { data }
     }
 
+    pub fn rotation_matrix2x2(theta: f32) -> Matrix<f32, 2, 2> {
+        Matrix::new([[theta.cos(), -theta.sin()], [theta.sin(), theta.cos()]])
+    }
+
+    pub fn rotation_matrix3x3_x(theta: f32) -> Matrix<f32, 3, 3> {
+        Matrix::new([
+            [1.0, 0.0, 0.0],
+            [0.0, theta.cos(), -theta.sin()],
+            [0.0, theta.sin(), theta.cos()],
+        ])
+    }
+    pub fn rotation_matrix3x3_y(theta: f32) -> Matrix<f32, 3, 3> {
+        Matrix::new([
+            [theta.cos(), 0.0, theta.sin()],
+            [0.0, 1.0, 0.0],
+            [-theta.sin(), 0.0, theta.cos()],
+        ])
+    }
+    pub fn rotation_matrix3x3_z(theta: f32) -> Matrix<f32, 3, 3> {
+        Matrix::new([
+            [theta.cos(), -theta.sin(), 0.0],
+            [theta.sin(), theta.cos(), 0.0],
+            [0.0, 0.0, 1.0],
+        ])
+    }
+
     pub fn size(&self) -> (usize, usize) {
         (ROWS, COLUMNS)
     }

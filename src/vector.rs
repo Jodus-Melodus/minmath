@@ -433,6 +433,8 @@ where
 
 #[cfg(test)]
 mod vector_tests {
+    use std::f32::consts::FRAC_PI_2;
+
     use crate::{matrix::Matrix, vector::Vector};
 
     #[test]
