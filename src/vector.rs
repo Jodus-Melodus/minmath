@@ -433,6 +433,8 @@ where
 
 #[cfg(test)]
 mod vector_tests {
+    use std::f32::consts::FRAC_PI_2;
+
     use crate::{matrix::Matrix, vector::Vector};
 
     #[test]
@@ -558,5 +560,90 @@ mod vector_tests {
         let vec2 = Vector::new([4, 5, 6]);
 
         assert_eq!(vec1.cross(vec2), Vector::new([-3, 6, -3]));
+    }
+
+    #[test]
+    fn test_vector_rotation_x() {
+        let v = Vector::new([1.0, 2.0, 3.0]);
+        let m = v.to_matrix();
+        let rotated = Matrix::<f32, 3, 3>::rotation_matrix3x3_x(FRAC_PI_2) * m;
+        let result = rotated.to_vector();
+
+        // Rotating (1,2,3) about X by 90°: (1, -3, 2)
+        let expected = Vector::new([1.0, -3.0, 2.0]);
+        assert!((result.data[0] - expected.data[0]).abs() < 1e-6);
+        assert!((result.data[1] - expected.data[1]).abs() < 1e-6);
+        assert!((result.data[2] - expected.data[2]).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_vector_rotation_y() {
+        let v = Vector::new([1.0, 2.0, 3.0]);
+        let m = v.to_matrix();
+        let rotated = Matrix::<f32, 3, 3>::rotation_matrix3x3_y(FRAC_PI_2) * m;
+        let result = rotated.to_vector();
+
+        // Rotating (1,2,3) about Y by 90°: (3, 2, -1)
+        let expected = Vector::new([3.0, 2.0, -1.0]);
+        assert!((result.data[0] - expected.data[0]).abs() < 1e-6);
+        assert!((result.data[1] - expected.data[1]).abs() < 1e-6);
+        assert!((result.data[2] - expected.data[2]).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_vector_rotation_z() {
+        let v = Vector::new([1.0, 2.0, 3.0]);
+        let m = v.to_matrix();
+        let rotated = Matrix::<f32, 3, 3>::rotation_matrix3x3_z(FRAC_PI_2) * m;
+        let result = rotated.to_vector();
+
+        // Rotating (1,2,3) about Z by 90°: (-2, 1, 3)
+        let expected = Vector::new([-2.0, 1.0, 3.0]);
+        assert!((result.data[0] - expected.data[0]).abs() < 1e-6);
+        assert!((result.data[1] - expected.data[1]).abs() < 1e-6);
+        assert!((result.data[2] - expected.data[2]).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_vector_rotation_2d_90deg() {
+        use std::f32::consts::FRAC_PI_2;
+        let v = Vector::new([1.0_f32, 0.0]);
+        let m = v.to_matrix();
+        let rotated = Matrix::<f32, 2, 2>::rotation_matrix2x2(FRAC_PI_2) * m;
+        let result = rotated.to_vector();
+
+        // Rotating (1,0) by 90°: (0,1)
+        let expected = Vector::new([0.0, 1.0]);
+        assert!((result.data[0] - expected.data[0]).abs() < 1e-6);
+        assert!((result.data[1] - expected.data[1]).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_vector_rotation_2d_180deg() {
+        use std::f32::consts::PI;
+        let v = Vector::new([1.0_f32, 0.0]);
+        let m = v.to_matrix();
+        let rotated = Matrix::<f32, 2, 2>::rotation_matrix2x2(PI) * m;
+        let result = rotated.to_vector();
+
+        // Rotating (1,0) by 180°: (-1,0)
+        let expected = Vector::new([-1.0, 0.0]);
+        assert!((result.data[0] - expected.data[0]).abs() < 1e-6);
+        assert!((result.data[1] - expected.data[1]).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_vector_rotation_2d_45deg() {
+        use std::f32::consts::FRAC_PI_4;
+        let v = Vector::new([1.0_f32, 0.0]);
+        let m = v.to_matrix();
+        let rotated = Matrix::<f32, 2, 2>::rotation_matrix2x2(FRAC_PI_4) * m;
+        let result = rotated.to_vector();
+
+        // Rotating (1,0) by 45°: (sqrt(2)/2, sqrt(2)/2)
+        let sqrt2_over_2 = std::f32::consts::SQRT_2 / 2.0;
+        let expected = Vector::new([sqrt2_over_2, sqrt2_over_2]);
+        assert!((result.data[0] - expected.data[0]).abs() < 1e-6);
+        assert!((result.data[1] - expected.data[1]).abs() < 1e-6);
     }
 }
