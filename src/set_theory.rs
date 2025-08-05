@@ -29,7 +29,28 @@ impl<T: Number> Set<T> {
             self.elements.sort();
         }
     }
+
+    /// Perform `or` between two sets
+    pub fn or(&self, other: &Set<T>) -> Set<T> {
+        let mut elements = self.elements.clone();
+        elements.extend(other.elements.iter().cloned());
+        elements.sort();
+        elements.dedup();
+        Set { elements }
+    }
+
+    /// Perform `and` between two sets
+    pub fn and(&self, other: &Set<T>) -> Set<T> {
+        let elements = self
+            .elements
+            .iter()
+            .filter(|element| other.elements.contains(&element))
+            .cloned()
+            .collect();
+        Set { elements }
+    }
 }
+
 impl<T: Number> From<Vec<T>> for Set<T> {
     fn from(value: Vec<T>) -> Self {
         let mut elements = value;
