@@ -13,14 +13,3 @@ pub trait Number:
     + Div<Output = Self>
 {
 }
-
-impl<T> Number for T where
-    T: Copy
-        + PartialOrd
-        + Ord
-        + Add<Output = T>
-        + Sub<Output = T>
-        + Mul<Output = T>
-        + Div<Output = T>
-{
-}

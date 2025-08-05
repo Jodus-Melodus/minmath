@@ -1,5 +1,8 @@
 use crate::Number;
-use std::fmt::{Debug, Display};
+use std::{
+    fmt::{Debug, Display},
+    ops::{Add, Div, Mul, Sub},
+};
 
 #[derive(PartialEq, Eq, PartialOrd, Ord)]
 pub struct Set<T: Number> {
@@ -70,4 +73,15 @@ impl<T: Number + ToString> Display for Set<T> {
                 .join(",")
         )
     }
+}
+
+impl<T> Number for T where
+    T: Copy
+        + PartialOrd
+        + Ord
+        + Add<Output = T>
+        + Sub<Output = T>
+        + Mul<Output = T>
+        + Div<Output = T>
+{
 }
