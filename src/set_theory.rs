@@ -1,33 +1,11 @@
+use crate::Number;
 use std::{
     fmt::{Debug, Display},
     ops::{Add, Div, Mul, Sub},
 };
 
-pub trait Number:
-    Copy
-    + PartialOrd
-    + Ord
-    + Add<Output = Self>
-    + Sub<Output = Self>
-    + Mul<Output = Self>
-    + Div<Output = Self>
-{
-}
-
-impl<T> Number for T where
-    T: Copy
-        + PartialOrd
-        + Ord
-        + Add<Output = T>
-        + Sub<Output = T>
-        + Mul<Output = T>
-        + Div<Output = T>
-{
-}
-
-#[derive(PartialEq, Eq, PartialOrd, Ord)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Clone)]
 pub struct Set<T: Number> {
-    pub name: &'static str,
     elements: Vec<T>,
 }
 
@@ -35,7 +13,6 @@ impl<T: Number> Set<T> {
     /// Creates a new empty set with type `T`
     pub fn new() -> Self {
         Set {
-            name: "S",
             elements: Vec::new(),
         }
     }
@@ -52,17 +29,35 @@ impl<T: Number> Set<T> {
             self.elements.sort();
         }
     }
+
+    /// Perform `or` between two sets
+    pub fn or(&self, other: &Set<T>) -> Set<T> {
+        let mut elements = self.elements.clone();
+        elements.extend(other.elements.iter().cloned());
+        elements.sort();
+        elements.dedup();
+        Set { elements }
+    }
+
+    /// Perform `and` between two sets
+    pub fn and(&self, other: &Set<T>) -> Set<T> {
+        let elements = self
+            .elements
+            .iter()
+            .filter(|element| other.elements.contains(&element))
+            .cloned()
+            .collect();
+        Set { elements }
+    }
 }
+
 impl<T: Number> From<Vec<T>> for Set<T> {
     fn from(value: Vec<T>) -> Self {
         let mut elements = value;
         elements.sort();
         elements.dedup();
 
-        Set {
-            name: "S",
-            elements,
-        }
+        Set { elements }
     }
 }
 
@@ -70,8 +65,7 @@ impl<T: Number + ToString> Debug for Set<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(
             f,
-            "{} = {{{}}}",
-            self.name,
+            "{{{}}}",
             self.elements
                 .iter()
                 .map(|e| e.to_string())
@@ -85,8 +79,7 @@ impl<T: Number + ToString> Display for Set<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(
             f,
-            "{} = {{{}}}",
-            self.name,
+            "{{{}}}",
             self.elements
                 .iter()
                 .map(|e| e.to_string())
@@ -94,4 +87,15 @@ impl<T: Number + ToString> Display for Set<T> {
                 .join(",")
         )
     }
+}
+
+impl<T> Number for T where
+    T: Copy
+        + PartialOrd
+        + Ord
+        + Add<Output = T>
+        + Sub<Output = T>
+        + Mul<Output = T>
+        + Div<Output = T>
+{
 }

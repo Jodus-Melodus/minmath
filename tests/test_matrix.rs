@@ -1,14 +1,14 @@
 use minmath::linear_algebra::{matrix::Matrix, vector::Vector};
 
 #[test]
-fn test_initialization() {
+fn initialization() {
     let matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
 
     dbg!("{}", matrix);
 }
 
 #[test]
-fn test_size() {
+fn size() {
     let matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
     let (rows, columns) = matrix.size();
 
@@ -16,7 +16,7 @@ fn test_size() {
 }
 
 #[test]
-fn test_conversion() {
+fn conversion() {
     let matrix = Matrix::new([[4], [0], [-3]]);
     let vector = Vector::new([4, 0, -3]);
     let vector_result = matrix.to_vector();
@@ -28,7 +28,7 @@ fn test_conversion() {
 }
 
 #[test]
-fn test_transpose() {
+fn transpose() {
     let matrix = Matrix::new([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]);
     let transpose = Matrix::new([[1.0, 4.0], [2.0, 5.0], [3.0, 6.0]]);
     let transposed = matrix.transpose();
@@ -37,7 +37,7 @@ fn test_transpose() {
 }
 
 #[test]
-fn test_scalar_matrix_addition() {
+fn scalar_matrix_addition() {
     let matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
     let scalar = 5;
     let actual = Matrix::new([[9, 8, 3], [5, 7, 6], [5, 8, 6]]);
@@ -46,7 +46,7 @@ fn test_scalar_matrix_addition() {
 }
 
 #[test]
-fn test_scalar_matrix_subtraction() {
+fn scalar_matrix_subtraction() {
     let matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
     let scalar = 5;
     let actual = Matrix::new([[-1, -2, -7], [-5, -3, -4], [-5, -2, -4]]);
@@ -55,7 +55,7 @@ fn test_scalar_matrix_subtraction() {
 }
 
 #[test]
-fn test_scalar_matrix_multiplication() {
+fn scalar_matrix_multiplication() {
     let matrix = Matrix::new([[4.0, 3.0, -2.0], [0.0, 2.0, 1.0], [0.0, 3.0, 1.0]]);
     let scalar = 5.0;
     let actual = Matrix::new([[20.0, 15.0, -10.0], [0.0, 10.0, 5.0], [0.0, 15.0, 5.0]]);
@@ -64,7 +64,7 @@ fn test_scalar_matrix_multiplication() {
 }
 
 #[test]
-fn test_scalar_matrix_division() {
+fn scalar_matrix_division() {
     let matrix = Matrix::new([[4.0, 3.0, -2.0], [0.0, 2.0, 1.0], [0.0, 3.0, 1.0]]);
     let scalar = 5.0;
     let actual = Matrix::new([
@@ -77,7 +77,7 @@ fn test_scalar_matrix_division() {
 }
 
 #[test]
-fn test_scalar_matrix_addition_assign() {
+fn scalar_matrix_addition_assign() {
     let mut matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
     let scalar = 5;
     matrix += scalar;
@@ -87,7 +87,7 @@ fn test_scalar_matrix_addition_assign() {
 }
 
 #[test]
-fn test_scalar_matrix_subtraction_assign() {
+fn scalar_matrix_subtraction_assign() {
     let mut matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
     let scalar = 5;
     matrix -= scalar;
@@ -97,7 +97,7 @@ fn test_scalar_matrix_subtraction_assign() {
 }
 
 #[test]
-fn test_scalar_matrix_multiplication_assign() {
+fn scalar_matrix_multiplication_assign() {
     let mut matrix = Matrix::new([[4.0, 3.0, -2.0], [0.0, 2.0, 1.0], [0.0, 3.0, 1.0]]);
     let scalar = 5.0;
     matrix *= scalar;
@@ -107,7 +107,7 @@ fn test_scalar_matrix_multiplication_assign() {
 }
 
 #[test]
-fn test_scalar_matrix_division_assign() {
+fn scalar_matrix_division_assign() {
     let mut matrix = Matrix::new([[4.0, 3.0, -2.0], [0.0, 2.0, 1.0], [0.0, 3.0, 1.0]]);
     let scalar = 5.0;
     matrix /= scalar;
@@ -121,7 +121,7 @@ fn test_scalar_matrix_division_assign() {
 }
 
 #[test]
-fn test_matrix_addition() {
+fn matrix_addition() {
     let a = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
     let b = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
     let expected = Matrix::new([[5, 5, 1], [4, 7, 7], [7, 11, 10]]);
@@ -129,7 +129,7 @@ fn test_matrix_addition() {
 }
 
 #[test]
-fn test_matrix_subtraction() {
+fn matrix_subtraction() {
     let a = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
     let b = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
     let expected = Matrix::new([[3, 1, -5], [-4, -3, -5], [-7, -5, -8]]);
@@ -137,7 +137,7 @@ fn test_matrix_subtraction() {
 }
 
 #[test]
-fn test_matrix_multiplication() {
+fn matrix_multiplication() {
     let a = Matrix::new([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]);
     let b = Matrix::new([[7.0, 8.0], [9.0, 10.0], [11.0, 12.0]]);
     let expected = Matrix::new([[58.0, 64.0], [139.0, 154.0]]);
@@ -145,7 +145,7 @@ fn test_matrix_multiplication() {
 }
 
 #[test]
-fn test_non_square_matrix_multiplication() {
+fn non_square_matrix_multiplication() {
     // 2x3 * 3x2 = 2x2
     let a = Matrix::new([[1, 2, 3], [4, 5, 6]]);
     let b = Matrix::new([[7, 8], [9, 10], [11, 12]]);
@@ -154,7 +154,7 @@ fn test_non_square_matrix_multiplication() {
 }
 
 #[test]
-fn test_rectangular_matrix_multiplication() {
+fn rectangular_matrix_multiplication() {
     // 3x2 * 2x4 = 3x4
     let a = Matrix::new([[1, 2], [3, 4], [5, 6]]);
     let b = Matrix::new([[7, 8, 9, 10], [11, 12, 13, 14]]);
@@ -182,7 +182,7 @@ fn test_rectangular_matrix_multiplication() {
 }
 
 #[test]
-fn test_matrix_multiplication_identity() {
+fn matrix_multiplication_identity() {
     // 2x2 * 2x2 identity = original
     let a = Matrix::new([[5, 7], [6, 8]]);
     let identity = Matrix::new([[1, 0], [0, 1]]);

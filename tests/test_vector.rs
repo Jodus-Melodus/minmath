@@ -3,14 +3,14 @@ use std::f32::consts::FRAC_PI_2;
 use minmath::linear_algebra::{matrix::Matrix, vector::Vector};
 
 #[test]
-fn test_initialization() {
+fn initialization() {
     let vec = Vector::new([4, -3, 2]);
 
     dbg!("{}", vec);
 }
 
 #[test]
-fn test_size() {
+fn size() {
     let vec1 = Vector::new([4]);
     let vec2 = Vector::new([4, -5]);
     let vec3 = Vector::new([9, 2, -1]);
@@ -21,7 +21,7 @@ fn test_size() {
 }
 
 #[test]
-fn test_conversion() {
+fn conversion() {
     let vector = Vector::new([5, -3, 2]);
     let matrix = Matrix::new([[5], [-3], [2]]);
     let matrix_result = vector.to_matrix();
@@ -30,7 +30,7 @@ fn test_conversion() {
 }
 
 #[test]
-fn test_vector_addition() {
+fn vector_addition() {
     let vec1 = Vector::new([4, 0, -1]);
     let vec2 = Vector::new([-3, 2, 0]);
     let vec3 = vec1 + vec2;
@@ -39,7 +39,7 @@ fn test_vector_addition() {
 }
 
 #[test]
-fn test_vector_subtraction() {
+fn vector_subtraction() {
     let vec1 = Vector::new([4, 0, -1]);
     let vec2 = Vector::new([-3, 2, 0]);
     let vec3 = vec1 - vec2;
@@ -48,7 +48,7 @@ fn test_vector_subtraction() {
 }
 
 #[test]
-fn test_scalar_vector_addition() {
+fn scalar_vector_addition() {
     let vec1 = Vector::new([3, -3, 9]);
     let res = vec1 + 5;
 
@@ -56,7 +56,7 @@ fn test_scalar_vector_addition() {
 }
 
 #[test]
-fn test_scalar_vector_addition_assign() {
+fn scalar_vector_addition_assign() {
     let mut vec1 = Vector::new([3, -3, 9]);
     vec1 += 5;
 
@@ -64,7 +64,7 @@ fn test_scalar_vector_addition_assign() {
 }
 
 #[test]
-fn test_scalar_vector_subtraction() {
+fn scalar_vector_subtraction() {
     let vec1 = Vector::new([3, -3, 9]);
     let res = vec1 - 5;
 
@@ -72,7 +72,7 @@ fn test_scalar_vector_subtraction() {
 }
 
 #[test]
-fn test_scalar_vector_subtraction_assign() {
+fn scalar_vector_subtraction_assign() {
     let mut vec1 = Vector::new([3, -3, 9]);
     vec1 -= 5;
 
@@ -80,7 +80,7 @@ fn test_scalar_vector_subtraction_assign() {
 }
 
 #[test]
-fn test_scalar_vector_multiplication() {
+fn scalar_vector_multiplication() {
     let vec1 = Vector::new([-3, 9, 2]);
     let res = vec1 * 3;
 
@@ -88,7 +88,7 @@ fn test_scalar_vector_multiplication() {
 }
 
 #[test]
-fn test_scalar_vector_multiplication_assign() {
+fn scalar_vector_multiplication_assign() {
     let mut vec1 = Vector::new([3, -3, 9]);
     vec1 *= 3;
 
@@ -96,7 +96,7 @@ fn test_scalar_vector_multiplication_assign() {
 }
 
 #[test]
-fn test_scalar_vector_division() {
+fn scalar_vector_division() {
     let vec1 = Vector::new([-3, 9, 2]);
     let res = vec1 / 3;
 
@@ -104,7 +104,7 @@ fn test_scalar_vector_division() {
 }
 
 #[test]
-fn test_scalar_vector_division_assign() {
+fn scalar_vector_division_assign() {
     let mut vec1 = Vector::new([3, -3, 9]);
     vec1 /= 3;
 
@@ -112,7 +112,7 @@ fn test_scalar_vector_division_assign() {
 }
 
 #[test]
-fn test_vector_dot_product() {
+fn vector_dot_product() {
     let vec1 = Vector::new([1, 2, 3]);
     let vec2 = Vector::new([4, 5, 6]);
 
@@ -120,7 +120,7 @@ fn test_vector_dot_product() {
 }
 
 #[test]
-fn test_vector_cross_product() {
+fn vector_cross_product() {
     let vec1 = Vector::new([1, 2, 3]);
     let vec2 = Vector::new([4, 5, 6]);
 
@@ -128,7 +128,7 @@ fn test_vector_cross_product() {
 }
 
 #[test]
-fn test_vector_rotation_x() {
+fn vector_rotation_x() {
     let v = Vector::new([1.0, 2.0, 3.0]);
     let m = v.to_matrix();
     let rotated = Matrix::<f32, 3, 3>::rotation_matrix3x3_x(FRAC_PI_2) * m;
@@ -140,7 +140,7 @@ fn test_vector_rotation_x() {
 }
 
 #[test]
-fn test_vector_rotation_y() {
+fn vector_rotation_y() {
     let v = Vector::new([1.0, 2.0, 3.0]);
     let m = v.to_matrix();
     let rotated = Matrix::<f32, 3, 3>::rotation_matrix3x3_y(FRAC_PI_2) * m;
@@ -152,7 +152,7 @@ fn test_vector_rotation_y() {
 }
 
 #[test]
-fn test_vector_rotation_z() {
+fn vector_rotation_z() {
     let v = Vector::new([1.0, 2.0, 3.0]);
     let m = v.to_matrix();
     let rotated = Matrix::<f32, 3, 3>::rotation_matrix3x3_z(FRAC_PI_2) * m;
@@ -164,7 +164,7 @@ fn test_vector_rotation_z() {
 }
 
 #[test]
-fn test_vector_rotation_2d_90deg() {
+fn vector_rotation_2d_90deg() {
     use std::f32::consts::FRAC_PI_2;
     let v = Vector::new([1.0_f32, 0.0]);
     let m = v.to_matrix();
@@ -177,7 +177,7 @@ fn test_vector_rotation_2d_90deg() {
 }
 
 #[test]
-fn test_vector_rotation_2d_180deg() {
+fn vector_rotation_2d_180deg() {
     use std::f32::consts::PI;
     let v = Vector::new([1.0_f32, 0.0]);
     let m = v.to_matrix();
@@ -190,7 +190,7 @@ fn test_vector_rotation_2d_180deg() {
 }
 
 #[test]
-fn test_vector_rotation_2d_45deg() {
+fn vector_rotation_2d_45deg() {
     use std::f32::consts::FRAC_PI_4;
     let v = Vector::new([1.0_f32, 0.0]);
     let m = v.to_matrix();

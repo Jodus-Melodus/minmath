@@ -2,10 +2,8 @@ use minmath::set_theory::Set;
 
 #[test]
 fn initialization() {
-    let mut set = Set::<u8>::new();
-    set.name = "S";
+    let set = Set::<u8>::new();
     assert_eq!(0, set.cardinality());
-    println!("{}", set);
 }
 
 #[test]
@@ -16,5 +14,4 @@ fn add_element() {
 
     assert_eq!(1, set.cardinality());
     assert_eq!(set, expected);
-    println!("{}", set);
 }
