@@ -3,7 +3,7 @@ name: Publish Rust Crate
 on:
   push:
     branches:
-      - main   # or your default branch
+      - main
 
 jobs:
   publish:
@@ -25,4 +25,4 @@ jobs:
       - name: Publish crate
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-        run: cargo release minor --execute
+        run: cargo release minor --dry-run
