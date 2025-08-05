@@ -1,29 +1,5 @@
-use std::{
-    fmt::{Debug, Display},
-    ops::{Add, Div, Mul, Sub},
-};
-
-pub trait Number:
-    Copy
-    + PartialOrd
-    + Ord
-    + Add<Output = Self>
-    + Sub<Output = Self>
-    + Mul<Output = Self>
-    + Div<Output = Self>
-{
-}
-
-impl<T> Number for T where
-    T: Copy
-        + PartialOrd
-        + Ord
-        + Add<Output = T>
-        + Sub<Output = T>
-        + Mul<Output = T>
-        + Div<Output = T>
-{
-}
+use crate::Number;
+use std::fmt::{Debug, Display};
 
 #[derive(PartialEq, Eq, PartialOrd, Ord)]
 pub struct Set<T: Number> {
