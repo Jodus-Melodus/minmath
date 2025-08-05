@@ -3,7 +3,7 @@ use std::{
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
 };
 
-use crate::matrix::Matrix;
+use crate::linear_algebra::matrix::Matrix;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub struct Vector<T, const SIZE: usize>

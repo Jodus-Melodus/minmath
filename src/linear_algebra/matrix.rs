@@ -4,7 +4,7 @@ use std::{
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
 };
 
-use crate::vector::Vector;
+use crate::linear_algebra::vector::Vector;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub struct Matrix<T, const ROWS: usize, const COLUMNS: usize>

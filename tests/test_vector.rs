@@ -1,6 +1,6 @@
 use std::f32::consts::FRAC_PI_2;
 
-use minmath::{Matrix, Vector};
+use minmath::linear_algebra::{matrix::Matrix, vector::Vector};
 
 #[test]
 fn test_initialization() {
