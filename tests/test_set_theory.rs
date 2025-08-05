@@ -1,0 +1,19 @@
+use minmath::set_theory::Set;
+
+#[test]
+fn initialization() {
+    let set = Set::<u8>::new();
+
+    assert_eq!(0, set.size());
+}
+
+#[test]
+fn add_element() {
+    let mut set = Set::<u8>::new();
+    set.add_element(4);
+    let expected = Set::from(vec![4]);
+
+    assert_eq!(1, set.size());
+    assert_eq!(set, expected);
+    println!("{}", set);
+}

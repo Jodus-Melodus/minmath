@@ -1,4 +1,7 @@
-use std::ops::{Add, Div, Mul, Sub};
+use std::{
+    fmt::{Debug, Display},
+    ops::{Add, Div, Mul, Sub},
+};
 
 pub trait Number:
     Copy
@@ -22,6 +25,7 @@ impl<T> Number for T where
 {
 }
 
+#[derive(PartialEq, Eq, PartialOrd, Ord)]
 pub struct Set<T: Number> {
     elements: Vec<T>,
 }
@@ -33,7 +37,7 @@ impl<T: Number> Set<T> {
         }
     }
 
-    pub fn n(&self) -> usize {
+    pub fn size(&self) -> usize {
         self.elements.len()
     }
 
@@ -51,5 +55,33 @@ impl<T: Number> From<Vec<T>> for Set<T> {
         elements.dedup();
 
         Set { elements }
+    }
+}
+
+impl<T: Number + ToString> Debug for Set<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        writeln!(
+            f,
+            "{{{}}}",
+            self.elements
+                .iter()
+                .map(|e| e.to_string())
+                .collect::<Vec<_>>()
+                .join(",")
+        )
+    }
+}
+
+impl<T: Number + ToString> Display for Set<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        writeln!(
+            f,
+            "{{{}}}",
+            self.elements
+                .iter()
+                .map(|e| e.to_string())
+                .collect::<Vec<_>>()
+                .join(",")
+        )
     }
 }
