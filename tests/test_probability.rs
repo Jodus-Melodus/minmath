@@ -1,7 +1,10 @@
-use minmath::probability::{a_or_b, complement};
+use minmath::{
+    probability::{Venn, complement},
+    set_theory::Set,
+};
 
 #[test]
-fn test_complement() {
+fn probability_complement() {
     assert_eq!(complement(0.0), 1.0);
     assert_eq!(complement(1.0), 0.0);
     assert_eq!(complement(0.5), 0.5);
@@ -9,13 +12,12 @@ fn test_complement() {
 }
 
 #[test]
-fn test_a_or_b() {
-    // Basic addition minus overlap
-    assert_eq!(a_or_b(0.0, 0.0, 0.0), 0.0);
-    assert_eq!(a_or_b(0.5, 0.4, 0.1), 0.8);
-    assert_eq!(a_or_b(1.0, 0.0, 0.0), 1.0);
-    assert_eq!(a_or_b(1.0, 1.0, 1.0), 1.0);
-    // Check with floating point tolerance
-    let result = a_or_b(0.3, 0.6, 0.2);
-    assert!((result - 0.7).abs() < 1e-12);
+fn venn_initialization() {
+    let mut venn = Venn::<u8>::new();
+    let set1 = Set::from(vec![2, 4, 6]);
+    let set2 = Set::from(vec![2]);
+    venn.add_set("E", set1);
+    venn.add_set("P", set2);
+
+    assert_eq!(venn.n_elements(), 3);
 }
