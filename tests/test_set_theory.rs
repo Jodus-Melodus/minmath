@@ -2,8 +2,7 @@ use minmath::set_theory::Set;
 
 #[test]
 fn initialization() {
-    let mut set = Set::<u8>::new();
-    set.name = "S";
+    let set = Set::<u8>::new();
     assert_eq!(0, set.cardinality());
     println!("{}", set);
 }
