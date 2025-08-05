@@ -4,7 +4,7 @@ use minmath::set_theory::Set;
 fn initialization() {
     let mut set = Set::<u8>::new();
     set.name = "S";
-    assert_eq!(0, set.size());
+    assert_eq!(0, set.cardinality());
     println!("{}", set);
 }
 
@@ -14,7 +14,7 @@ fn add_element() {
     set.add_element(4);
     let expected = Set::from(vec![4]);
 
-    assert_eq!(1, set.size());
+    assert_eq!(1, set.cardinality());
     assert_eq!(set, expected);
     println!("{}", set);
 }
