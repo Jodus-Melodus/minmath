@@ -17,7 +17,17 @@ impl<T: Number> Venn<T> {
     }
 
     /// Add a `Set<T>` to the `Venn<T>`
-    pub fn add_set(&mut self, set_name: &'static str, set: Set<T>) {}
+    pub fn add_set(&mut self, set_name: &'static str, set: Set<T>) {
+        if !self.sets.contains_key(set_name) {
+            self.sets.insert(set_name, set);
+        }
+    }
+}
+
+impl<T: Number> From<HashMap<&'static str, Set<T>>> for Venn<T> {
+    fn from(value: HashMap<&'static str, Set<T>>) -> Self {
+        Venn { sets: value }
+    }
 }
 
 pub fn complement(p: Probability) -> Probability {
