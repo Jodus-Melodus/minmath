@@ -4,7 +4,7 @@ use std::{
     ops::{Add, Div, Mul, Sub},
 };
 
-#[derive(PartialEq, Eq, PartialOrd, Ord)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Clone)]
 pub struct Set<T: Number> {
     elements: Vec<T>,
 }

@@ -22,6 +22,17 @@ impl<T: Number> Venn<T> {
             self.sets.insert(set_name, set);
         }
     }
+
+    /// Reduce using `or` on each set to get amount of unique elements
+    pub fn n_elements(&self) -> usize {
+        self.sets
+            .values()
+            .into_iter()
+            .cloned()
+            .reduce(|a, b| a.or(&b))
+            .unwrap()
+            .cardinality()
+    }
 }
 
 impl<T: Number> From<HashMap<&'static str, Set<T>>> for Venn<T> {
