@@ -81,3 +81,6 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE.md) for de
 - [Crates.io](https://crates.io/crates/minmath)
 - [Documentation (docs.rs)](https://docs.rs/minmath)
 - [GitHub Repository](https://github.com/Jodus-Melodus/minmath)
+
+
+---
