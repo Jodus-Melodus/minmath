@@ -2,9 +2,10 @@ use minmath::set_theory::Set;
 
 #[test]
 fn initialization() {
-    let set = Set::<u8>::new();
-
+    let mut set = Set::<u8>::new();
+    set.name = "S";
     assert_eq!(0, set.size());
+    println!("{}", set);
 }
 
 #[test]

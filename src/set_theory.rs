@@ -27,12 +27,14 @@ impl<T> Number for T where
 
 #[derive(PartialEq, Eq, PartialOrd, Ord)]
 pub struct Set<T: Number> {
+    pub name: &'static str,
     elements: Vec<T>,
 }
 
 impl<T: Number> Set<T> {
     pub fn new() -> Self {
         Set {
+            name: "S",
             elements: Vec::new(),
         }
     }
@@ -54,7 +56,10 @@ impl<T: Number> From<Vec<T>> for Set<T> {
         elements.sort();
         elements.dedup();
 
-        Set { elements }
+        Set {
+            name: "S",
+            elements,
+        }
     }
 }
 
@@ -62,7 +67,8 @@ impl<T: Number + ToString> Debug for Set<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(
             f,
-            "{{{}}}",
+            "{} = {{{}}}",
+            self.name,
             self.elements
                 .iter()
                 .map(|e| e.to_string())
@@ -76,7 +82,8 @@ impl<T: Number + ToString> Display for Set<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(
             f,
-            "{{{}}}",
+            "{} = {{{}}}",
+            self.name,
             self.elements
                 .iter()
                 .map(|e| e.to_string())
