@@ -1,40 +1,16 @@
 use std::{
-    fmt::{Debug, Display},
-    ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
+    fmt::{Debug, Display, Formatter, Result},
+    ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign},
 };
 
-use crate::linear_algebra::matrix::Matrix;
+use crate::{Number, linear_algebra::matrix::Matrix};
 
-#[derive(Clone, Copy, PartialEq, Eq)]
-pub struct Vector<T, const SIZE: usize>
-where
-    T: Add<Output = T>
-        + Sub<Output = T>
-        + Mul<Output = T>
-        + Div<Output = T>
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
-    data: [T; SIZE],
+#[derive(Clone, Copy, PartialEq)]
+pub struct Vector<T: Number, const SIZE: usize> {
+    pub data: [T; SIZE],
 }
 
-impl<T, const SIZE: usize> Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> Vector<T, SIZE> {
     pub fn new(data: [T; SIZE]) -> Self {
         Self { data }
     }
@@ -62,21 +38,7 @@ where
     }
 }
 
-impl<T> Vector<T, 3>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number> Vector<T, 3> {
     pub fn cross(&self, rhs: Self) -> Self {
         Vector::new([
             self.data[1] * rhs.data[2] - self.data[2] * rhs.data[1],
@@ -86,21 +48,7 @@ where
     }
 }
 
-impl<T, const SIZE: usize> Add for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> Add for Vector<T, SIZE> {
     type Output = Self;
     fn add(self, rhs: Self) -> Self::Output {
         let mut result = self.data;
@@ -111,21 +59,7 @@ where
     }
 }
 
-impl<T, const SIZE: usize> Add<T> for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> Add<T> for Vector<T, SIZE> {
     type Output = Self;
     fn add(self, rhs: T) -> Self::Output {
         let mut result = self.data;
@@ -136,21 +70,7 @@ where
     }
 }
 
-impl<T, const SIZE: usize> AddAssign for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> AddAssign for Vector<T, SIZE> {
     fn add_assign(&mut self, rhs: Self) {
         for i in 0..SIZE {
             self.data[i] += rhs.data[i];
@@ -158,42 +78,14 @@ where
     }
 }
 
-impl<T, const SIZE: usize> AddAssign<T> for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> AddAssign<T> for Vector<T, SIZE> {
     fn add_assign(&mut self, rhs: T) {
         for i in 0..SIZE {
             self.data[i] += rhs;
         }
     }
 }
-impl<T, const SIZE: usize> Sub for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> Sub for Vector<T, SIZE> {
     type Output = Self;
     fn sub(self, rhs: Self) -> Self::Output {
         let mut result = self.data;
@@ -204,21 +96,7 @@ where
     }
 }
 
-impl<T, const SIZE: usize> Sub<T> for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> Sub<T> for Vector<T, SIZE> {
     type Output = Self;
     fn sub(self, rhs: T) -> Self::Output {
         let mut result = self.data;
@@ -229,21 +107,7 @@ where
     }
 }
 
-impl<T, const SIZE: usize> SubAssign for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> SubAssign for Vector<T, SIZE> {
     fn sub_assign(&mut self, rhs: Self) {
         for i in 0..SIZE {
             self.data[i] -= rhs.data[i];
@@ -251,21 +115,7 @@ where
     }
 }
 
-impl<T, const SIZE: usize> SubAssign<T> for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> SubAssign<T> for Vector<T, SIZE> {
     fn sub_assign(&mut self, rhs: T) {
         for i in 0..SIZE {
             self.data[i] -= rhs;
@@ -273,21 +123,7 @@ where
     }
 }
 
-impl<T, const SIZE: usize> Mul<T> for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> Mul<T> for Vector<T, SIZE> {
     type Output = Self;
     fn mul(self, rhs: T) -> Self::Output {
         let mut result = self.data;
@@ -298,21 +134,7 @@ where
     }
 }
 
-impl<T, const SIZE: usize> MulAssign<T> for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> MulAssign<T> for Vector<T, SIZE> {
     fn mul_assign(&mut self, rhs: T) {
         for i in 0..SIZE {
             self.data[i] *= rhs;
@@ -320,21 +142,7 @@ where
     }
 }
 
-impl<T, const SIZE: usize> Div<T> for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> Div<T> for Vector<T, SIZE> {
     type Output = Self;
     fn div(self, rhs: T) -> Self::Output {
         let mut result = self.data;
@@ -345,21 +153,7 @@ where
     }
 }
 
-impl<T, const SIZE: usize> DivAssign<T> for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const SIZE: usize> DivAssign<T> for Vector<T, SIZE> {
     fn div_assign(&mut self, rhs: T) {
         for i in 0..SIZE {
             self.data[i] /= rhs;
@@ -367,66 +161,40 @@ where
     }
 }
 
-impl<T, const SIZE: usize> Debug for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl<T: Number, const SIZE: usize> Debug for Vector<T, SIZE> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         writeln!(f, "Vector ({}):", SIZE)?;
-        write!(
-            f,
-            "[{}",
-            self.data
-                .map(|v| format!("{}", v))
-                .iter()
-                .cloned()
-                .collect::<Vec<String>>()
-                .join(", ")
-        )?;
-        writeln!(f, "]")?;
-        Ok(())
+        let formatted = self
+            .data
+            .iter()
+            .map(|v| format!("{:?}", v))
+            .collect::<Vec<_>>()
+            .join(", ");
+        write!(f, "[{}]", formatted)
     }
 }
 
-impl<T, const SIZE: usize> Display for Vector<T, SIZE>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl<T: Number, const SIZE: usize> Display for Vector<T, SIZE> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         writeln!(f, "Vector ({}):", SIZE)?;
-        write!(
-            f,
-            "[{}",
-            self.data
-                .map(|v| format!("{}", v))
-                .iter()
-                .cloned()
-                .collect::<Vec<String>>()
-                .join(", ")
-        )?;
-        writeln!(f, "]")?;
-        Ok(())
+        let formatted = self
+            .data
+            .iter()
+            .map(|v| format!("{}", v))
+            .collect::<Vec<_>>()
+            .join(", ");
+        write!(f, "[{}]", formatted)
+    }
+}
+
+impl<T: Number, const SIZE: usize> Index<usize> for Vector<T, SIZE> {
+    type Output = T;
+    fn index(&self, idx: usize) -> &Self::Output {
+        &self.data[idx]
+    }
+}
+impl<T: Number, const SIZE: usize> IndexMut<usize> for Vector<T, SIZE> {
+    fn index_mut(&mut self, idx: usize) -> &mut Self::Output {
+        &mut self.data[idx]
     }
 }

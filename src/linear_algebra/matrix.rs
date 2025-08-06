@@ -4,38 +4,14 @@ use std::{
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
 };
 
-use crate::linear_algebra::vector::Vector;
+use crate::{Number, linear_algebra::vector::Vector};
 
-#[derive(Clone, Copy, PartialEq, Eq)]
-pub struct Matrix<T, const ROWS: usize, const COLUMNS: usize>
-where
-    T: Add<Output = T>
-        + Sub<Output = T>
-        + Mul<Output = T>
-        + Div<Output = T>
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+#[derive(Clone, Copy, PartialEq)]
+pub struct Matrix<T: Number, const ROWS: usize, const COLUMNS: usize> {
     data: [[T; COLUMNS]; ROWS],
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> Matrix<T, ROWS, COLUMNS> {
     pub fn new(data: [[T; COLUMNS]; ROWS]) -> Self {
         Self { data }
     }
@@ -98,41 +74,13 @@ where
     }
 }
 
-impl<T> Matrix<T, 2, 2>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number> Matrix<T, 2, 2> {
     pub fn determinant(&self) -> T {
         self.data[0][0] * self.data[1][1] - self.data[1][0] * self.data[0][1]
     }
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> Add for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> Add for Matrix<T, ROWS, COLUMNS> {
     type Output = Self;
     fn add(self, rhs: Self) -> Self::Output {
         let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] + rhs.data[r][c]));
@@ -141,21 +89,7 @@ where
     }
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> Add<T> for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> Add<T> for Matrix<T, ROWS, COLUMNS> {
     type Output = Self;
     fn add(self, rhs: T) -> Self::Output {
         let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] + rhs));
@@ -164,21 +98,7 @@ where
     }
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> AddAssign for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> AddAssign for Matrix<T, ROWS, COLUMNS> {
     fn add_assign(&mut self, rhs: Self) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
@@ -188,21 +108,7 @@ where
     }
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> AddAssign<T> for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> AddAssign<T> for Matrix<T, ROWS, COLUMNS> {
     fn add_assign(&mut self, rhs: T) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
@@ -212,21 +118,7 @@ where
     }
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> Sub for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> Sub for Matrix<T, ROWS, COLUMNS> {
     type Output = Self;
     fn sub(self, rhs: Self) -> Self::Output {
         let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] - rhs.data[r][c]));
@@ -235,21 +127,7 @@ where
     }
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> Sub<T> for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> Sub<T> for Matrix<T, ROWS, COLUMNS> {
     type Output = Self;
     fn sub(self, rhs: T) -> Self::Output {
         let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] - rhs));
@@ -258,21 +136,7 @@ where
     }
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> SubAssign for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> SubAssign for Matrix<T, ROWS, COLUMNS> {
     fn sub_assign(&mut self, rhs: Self) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
@@ -282,21 +146,7 @@ where
     }
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> SubAssign<T> for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> SubAssign<T> for Matrix<T, ROWS, COLUMNS> {
     fn sub_assign(&mut self, rhs: T) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
@@ -306,21 +156,13 @@ where
     }
 }
 
-impl<T, const LROWS: usize, const LCOLUMNS: usize, const RROWS: usize, const RCOLUMNS: usize>
-    Mul<Matrix<T, RROWS, RCOLUMNS>> for Matrix<T, LROWS, LCOLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
+impl<
+    T: Number,
+    const LROWS: usize,
+    const LCOLUMNS: usize,
+    const RROWS: usize,
+    const RCOLUMNS: usize,
+> Mul<Matrix<T, RROWS, RCOLUMNS>> for Matrix<T, LROWS, LCOLUMNS>
 {
     type Output = Matrix<T, LROWS, RCOLUMNS>;
     fn mul(self, rhs: Matrix<T, RROWS, RCOLUMNS>) -> Self::Output {
@@ -347,21 +189,7 @@ where
     }
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> Mul<T> for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> Mul<T> for Matrix<T, ROWS, COLUMNS> {
     type Output = Self;
     fn mul(self, rhs: T) -> Self::Output {
         let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] * rhs));
@@ -369,21 +197,7 @@ where
         Self { data }
     }
 }
-impl<T, const ROWS: usize, const COLUMNS: usize> MulAssign<T> for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> MulAssign<T> for Matrix<T, ROWS, COLUMNS> {
     fn mul_assign(&mut self, rhs: T) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
@@ -393,21 +207,7 @@ where
     }
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> Div<T> for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> Div<T> for Matrix<T, ROWS, COLUMNS> {
     type Output = Self;
     fn div(self, rhs: T) -> Self::Output {
         let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] / rhs));
@@ -415,21 +215,7 @@ where
         Self { data }
     }
 }
-impl<T, const ROWS: usize, const COLUMNS: usize> DivAssign<T> for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> DivAssign<T> for Matrix<T, ROWS, COLUMNS> {
     fn div_assign(&mut self, rhs: T) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
@@ -439,21 +225,7 @@ where
     }
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> Debug for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> Debug for Matrix<T, ROWS, COLUMNS> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(f, "Matrix ({}x{}):", ROWS, COLUMNS)?;
         for r in 0..ROWS {
@@ -466,21 +238,7 @@ where
     }
 }
 
-impl<T, const ROWS: usize, const COLUMNS: usize> Display for Matrix<T, ROWS, COLUMNS>
-where
-    T: Add<Output = T>
-        + AddAssign
-        + Sub<Output = T>
-        + SubAssign
-        + Mul<Output = T>
-        + MulAssign
-        + Div<Output = T>
-        + DivAssign
-        + Copy
-        + Debug
-        + Display
-        + Default,
-{
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> Display for Matrix<T, ROWS, COLUMNS> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(f, "Matrix ({}x{}):", ROWS, COLUMNS)?;
         for r in 0..ROWS {

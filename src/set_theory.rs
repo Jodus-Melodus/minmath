@@ -1,15 +1,12 @@
-use crate::Number;
-use std::{
-    fmt::{Debug, Display},
-    ops::{Add, Div, Mul, Sub},
-};
+use crate::OrderedNumber;
+use std::fmt::{Debug, Display};
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone)]
-pub struct Set<T: Number> {
+pub struct Set<T: OrderedNumber> {
     elements: Vec<T>,
 }
 
-impl<T: Number> Set<T> {
+impl<T: OrderedNumber> Set<T> {
     /// Creates a new empty set with type `T`
     pub fn new() -> Self {
         Set {
@@ -51,7 +48,7 @@ impl<T: Number> Set<T> {
     }
 }
 
-impl<T: Number> From<Vec<T>> for Set<T> {
+impl<T: OrderedNumber> From<Vec<T>> for Set<T> {
     fn from(value: Vec<T>) -> Self {
         let mut elements = value;
         elements.sort();
@@ -61,7 +58,7 @@ impl<T: Number> From<Vec<T>> for Set<T> {
     }
 }
 
-impl<T: Number + ToString> Debug for Set<T> {
+impl<T: OrderedNumber + ToString> Debug for Set<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(
             f,
@@ -75,7 +72,7 @@ impl<T: Number + ToString> Debug for Set<T> {
     }
 }
 
-impl<T: Number + ToString> Display for Set<T> {
+impl<T: OrderedNumber + ToString> Display for Set<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(
             f,
@@ -87,15 +84,4 @@ impl<T: Number + ToString> Display for Set<T> {
                 .join(",")
         )
     }
-}
-
-impl<T> Number for T where
-    T: Copy
-        + PartialOrd
-        + Ord
-        + Add<Output = T>
-        + Sub<Output = T>
-        + Mul<Output = T>
-        + Div<Output = T>
-{
 }
