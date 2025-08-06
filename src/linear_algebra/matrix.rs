@@ -1,7 +1,7 @@
 use std::{
     array,
     fmt::{Debug, Display},
-    ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
+    ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign},
 };
 
 use crate::{Number, linear_algebra::vector::Vector};
@@ -243,10 +243,25 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> Display for Matrix<T, R
         writeln!(f, "Matrix ({}x{}):", ROWS, COLUMNS)?;
         for r in 0..ROWS {
             for c in 0..COLUMNS {
-                write!(f, "{:?} ", self.data[r][c])?;
+                write!(f, "{} ", self.data[r][c])?;
             }
             writeln!(f)?;
         }
         Ok(())
+    }
+}
+
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> Index<usize> for Matrix<T, ROWS, COLUMNS> {
+    type Output = [T; COLUMNS];
+    fn index(&self, row: usize) -> &Self::Output {
+        &self.data[row]
+    }
+}
+
+impl<T: Number, const ROWS: usize, const COLUMNS: usize> IndexMut<usize>
+    for Matrix<T, ROWS, COLUMNS>
+{
+    fn index_mut(&mut self, row: usize) -> &mut Self::Output {
+        &mut self.data[row]
     }
 }

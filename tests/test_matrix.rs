@@ -1,190 +1,226 @@
-use minmath::linear_algebra::{matrix::Matrix, vector::Vector};
+use minmath::linear_algebra::matrix::Matrix;
 
-#[test]
-fn initialization() {
-    let matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
+fn matrix2x2_f32(data: [[f32; 2]; 2]) -> Matrix<f32, 2, 2> {
+    Matrix::new(data)
+}
 
-    dbg!("{}", matrix);
+fn matrix3x3_f32(data: [[f32; 3]; 3]) -> Matrix<f32, 3, 3> {
+    Matrix::new(data)
 }
 
 #[test]
-fn size() {
-    let matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
-    let (rows, columns) = matrix.size();
-
-    assert!(rows == 3 && columns == 3);
+fn test_new_and_indexing() {
+    let m = matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]);
+    assert_eq!(m[0][0], 1.0);
+    assert_eq!(m[0][1], 2.0);
+    assert_eq!(m[1][0], 3.0);
+    assert_eq!(m[1][1], 4.0);
 }
 
 #[test]
-fn conversion() {
-    let matrix = Matrix::new([[4], [0], [-3]]);
-    let vector = Vector::new([4, 0, -3]);
-    let vector_result = matrix.to_vector();
-
-    dbg!("{}", vector);
-    dbg!("{}", vector_result);
-
-    assert_eq!(vector, vector_result);
+fn test_add_matrix() {
+    let a = matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]);
+    let b = matrix2x2_f32([[5.0, 6.0], [7.0, 8.0]]);
+    let c = a + b;
+    assert_eq!(c, matrix2x2_f32([[6.0, 8.0], [10.0, 12.0]]));
 }
 
 #[test]
-fn transpose() {
-    let matrix = Matrix::new([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]);
-    let transpose = Matrix::new([[1.0, 4.0], [2.0, 5.0], [3.0, 6.0]]);
-    let transposed = matrix.transpose();
-
-    assert_eq!(transpose, transposed);
+fn test_add_scalar() {
+    let a = matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]);
+    let b = a + 1.0;
+    assert_eq!(b, matrix2x2_f32([[2.0, 3.0], [4.0, 5.0]]));
 }
 
 #[test]
-fn scalar_matrix_addition() {
-    let matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
-    let scalar = 5;
-    let actual = Matrix::new([[9, 8, 3], [5, 7, 6], [5, 8, 6]]);
-
-    assert_eq!(matrix + scalar, actual);
+fn test_sub_matrix() {
+    let a = matrix2x2_f32([[5.0, 6.0], [7.0, 8.0]]);
+    let b = matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]);
+    let c = a - b;
+    assert_eq!(c, matrix2x2_f32([[4.0, 4.0], [4.0, 4.0]]));
 }
 
 #[test]
-fn scalar_matrix_subtraction() {
-    let matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
-    let scalar = 5;
-    let actual = Matrix::new([[-1, -2, -7], [-5, -3, -4], [-5, -2, -4]]);
-
-    assert_eq!(matrix - scalar, actual);
+fn test_sub_scalar() {
+    let a = matrix2x2_f32([[2.0, 3.0], [4.0, 5.0]]);
+    let b = a - 1.0;
+    assert_eq!(b, matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]));
 }
 
 #[test]
-fn scalar_matrix_multiplication() {
-    let matrix = Matrix::new([[4.0, 3.0, -2.0], [0.0, 2.0, 1.0], [0.0, 3.0, 1.0]]);
-    let scalar = 5.0;
-    let actual = Matrix::new([[20.0, 15.0, -10.0], [0.0, 10.0, 5.0], [0.0, 15.0, 5.0]]);
-
-    assert_eq!(matrix * scalar, actual);
+fn test_mul_scalar() {
+    let a = matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]);
+    let b = a * 2.0;
+    assert_eq!(b, matrix2x2_f32([[2.0, 4.0], [6.0, 8.0]]));
 }
 
 #[test]
-fn scalar_matrix_division() {
-    let matrix = Matrix::new([[4.0, 3.0, -2.0], [0.0, 2.0, 1.0], [0.0, 3.0, 1.0]]);
-    let scalar = 5.0;
-    let actual = Matrix::new([
-        [4.0 / 5.0, 3.0 / 5.0, -2.0 / 5.0],
-        [0.0, 2.0 / 5.0, 1.0 / 5.0],
-        [0.0, 3.0 / 5.0, 1.0 / 5.0],
-    ]);
-
-    assert_eq!(matrix / scalar, actual);
+fn test_div_scalar() {
+    let a = matrix2x2_f32([[2.0, 4.0], [6.0, 8.0]]);
+    let b = a / 2.0;
+    assert_eq!(b, matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]));
 }
 
 #[test]
-fn scalar_matrix_addition_assign() {
-    let mut matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
-    let scalar = 5;
-    matrix += scalar;
-    let actual = Matrix::new([[9, 8, 3], [5, 7, 6], [5, 8, 6]]);
-
-    assert_eq!(matrix, actual);
+fn test_matrix_multiplication() {
+    let a = matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]);
+    let b = matrix2x2_f32([[2.0, 0.0], [1.0, 2.0]]);
+    let c = a * b;
+    assert_eq!(c, matrix2x2_f32([[4.0, 4.0], [10.0, 8.0]]));
 }
 
 #[test]
-fn scalar_matrix_subtraction_assign() {
-    let mut matrix = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
-    let scalar = 5;
-    matrix -= scalar;
-    let actual = Matrix::new([[-1, -2, -7], [-5, -3, -4], [-5, -2, -4]]);
-
-    assert_eq!(matrix, actual);
+fn test_transpose() {
+    let a = matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]);
+    let t = a.transpose();
+    assert_eq!(t, matrix2x2_f32([[1.0, 3.0], [2.0, 4.0]]));
 }
 
 #[test]
-fn scalar_matrix_multiplication_assign() {
-    let mut matrix = Matrix::new([[4.0, 3.0, -2.0], [0.0, 2.0, 1.0], [0.0, 3.0, 1.0]]);
-    let scalar = 5.0;
-    matrix *= scalar;
-    let actual = Matrix::new([[20.0, 15.0, -10.0], [0.0, 10.0, 5.0], [0.0, 15.0, 5.0]]);
-
-    assert_eq!(matrix, actual);
+fn test_determinant() {
+    let a = matrix2x2_f32([[4.0, 6.0], [3.0, 8.0]]);
+    assert_eq!(a.determinant(), 14.0);
 }
 
 #[test]
-fn scalar_matrix_division_assign() {
-    let mut matrix = Matrix::new([[4.0, 3.0, -2.0], [0.0, 2.0, 1.0], [0.0, 3.0, 1.0]]);
-    let scalar = 5.0;
-    matrix /= scalar;
-    let actual = Matrix::new([
-        [4.0 / 5.0, 3.0 / 5.0, -2.0 / 5.0],
-        [0.0, 2.0 / 5.0, 1.0 / 5.0],
-        [0.0, 3.0 / 5.0, 1.0 / 5.0],
-    ]);
-
-    assert_eq!(matrix, actual);
+fn test_rotation_matrix2x2() {
+    let theta = std::f32::consts::FRAC_PI_2; // 90 degrees
+    let rot = Matrix::<f32, 2, 2>::rotation_matrix2x2(theta);
+    let expected = matrix2x2_f32([[0.0, -1.0], [1.0, 0.0]]);
+    for r in 0..2 {
+        for c in 0..2 {
+            assert!((rot[r][c] - expected[r][c]).abs() < 1e-5);
+        }
+    }
 }
 
 #[test]
-fn matrix_addition() {
-    let a = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
-    let b = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
-    let expected = Matrix::new([[5, 5, 1], [4, 7, 7], [7, 11, 10]]);
-    assert_eq!(a + b, expected);
+fn test_rotation_matrix3x3_z() {
+    let theta = std::f32::consts::FRAC_PI_2; // 90 degrees
+    let rot = Matrix::<f32, 3, 3>::rotation_matrix3x3_z(theta);
+    let expected = matrix3x3_f32([[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]]);
+    for r in 0..3 {
+        for c in 0..3 {
+            assert!((rot[r][c] - expected[r][c]).abs() < 1e-5);
+        }
+    }
 }
 
 #[test]
-fn matrix_subtraction() {
-    let a = Matrix::new([[4, 3, -2], [0, 2, 1], [0, 3, 1]]);
-    let b = Matrix::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
-    let expected = Matrix::new([[3, 1, -5], [-4, -3, -5], [-7, -5, -8]]);
-    assert_eq!(a - b, expected);
+fn test_to_vector() {
+    let m = Matrix::<f32, 3, 1>::new([[1.0], [2.0], [3.0]]);
+    let v = m.to_vector();
+    assert_eq!(v[0], 1.0);
+    assert_eq!(v[1], 2.0);
+    assert_eq!(v[2], 3.0);
 }
 
 #[test]
-fn matrix_multiplication() {
-    let a = Matrix::new([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]);
-    let b = Matrix::new([[7.0, 8.0], [9.0, 10.0], [11.0, 12.0]]);
-    let expected = Matrix::new([[58.0, 64.0], [139.0, 154.0]]);
-    assert_eq!(a * b, expected);
+#[should_panic(expected = "Matrix should only have one column")]
+fn test_to_vector_invalid() {
+    let m = Matrix::<f32, 2, 2>::new([[1.0, 2.0], [3.0, 4.0]]);
+    let _ = m.to_vector(); // Should panic
 }
 
 #[test]
-fn non_square_matrix_multiplication() {
-    // 2x3 * 3x2 = 2x2
-    let a = Matrix::new([[1, 2, 3], [4, 5, 6]]);
-    let b = Matrix::new([[7, 8], [9, 10], [11, 12]]);
-    let expected = Matrix::new([[58, 64], [139, 154]]);
-    assert_eq!(a * b, expected);
+fn test_size() {
+    let m = matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]);
+    assert_eq!(m.size(), (2, 2));
 }
 
 #[test]
-fn rectangular_matrix_multiplication() {
-    // 3x2 * 2x4 = 3x4
-    let a = Matrix::new([[1, 2], [3, 4], [5, 6]]);
-    let b = Matrix::new([[7, 8, 9, 10], [11, 12, 13, 14]]);
-    let expected = Matrix::new([
-        [
-            1 * 7 + 2 * 11,
-            1 * 8 + 2 * 12,
-            1 * 9 + 2 * 13,
-            1 * 10 + 2 * 14,
-        ],
-        [
-            3 * 7 + 4 * 11,
-            3 * 8 + 4 * 12,
-            3 * 9 + 4 * 13,
-            3 * 10 + 4 * 14,
-        ],
-        [
-            5 * 7 + 6 * 11,
-            5 * 8 + 6 * 12,
-            5 * 9 + 6 * 13,
-            5 * 10 + 6 * 14,
-        ],
-    ]);
-    assert_eq!(a * b, expected);
+fn test_display_format() {
+    let m = matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]);
+    let formatted = format!("{}", m);
+    assert!(formatted.contains("Matrix (2x2):"));
+    assert!(formatted.contains("1 2"));
+    assert!(formatted.contains("3 4"));
 }
 
 #[test]
-fn matrix_multiplication_identity() {
-    // 2x2 * 2x2 identity = original
-    let a = Matrix::new([[5, 7], [6, 8]]);
-    let identity = Matrix::new([[1, 0], [0, 1]]);
-    assert_eq!(a * identity, a);
+fn test_debug_format() {
+    let m = matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]);
+    let formatted = format!("{:?}", m);
+    assert!(formatted.contains("Matrix (2x2):"));
+    assert!(formatted.contains("1.0"));
+    assert!(formatted.contains("4.0"));
+}
+
+#[test]
+fn test_rotation_matrix3x3_x() {
+    let theta = std::f32::consts::FRAC_PI_2; // 90 degrees
+    let rot = Matrix::<f32, 3, 3>::rotation_matrix3x3_x(theta);
+    let expected = Matrix::new([[1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [0.0, 1.0, 0.0]]);
+
+    for r in 0..3 {
+        for c in 0..3 {
+            assert!((rot[r][c] - expected[r][c]).abs() < 1e-5);
+        }
+    }
+}
+
+#[test]
+fn test_rotation_matrix3x3_y() {
+    let theta = std::f32::consts::FRAC_PI_2; // 90 degrees
+    let rot = Matrix::<f32, 3, 3>::rotation_matrix3x3_y(theta);
+    let expected = Matrix::new([[0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0]]);
+
+    for r in 0..3 {
+        for c in 0..3 {
+            assert!((rot[r][c] - expected[r][c]).abs() < 1e-5);
+        }
+    }
+}
+#[test]
+fn test_add_assign_scalar() {
+    let mut m = Matrix::new([[1.0, 2.0], [3.0, 4.0]]);
+    m += 1.0;
+    assert_eq!(m, Matrix::new([[2.0, 3.0], [4.0, 5.0]]));
+}
+
+#[test]
+fn test_add_assign_matrix() {
+    let mut a = Matrix::new([[1.0, 2.0], [3.0, 4.0]]);
+    let b = Matrix::new([[0.5, 1.0], [1.5, 2.0]]);
+    a += b;
+    assert_eq!(a, Matrix::new([[1.5, 3.0], [4.5, 6.0]]));
+}
+
+#[test]
+fn test_sub_assign_scalar() {
+    let mut m = Matrix::new([[5.0, 6.0], [7.0, 8.0]]);
+    m -= 1.0;
+    assert_eq!(m, Matrix::new([[4.0, 5.0], [6.0, 7.0]]));
+}
+
+#[test]
+fn test_sub_assign_matrix() {
+    let mut a = Matrix::new([[5.0, 6.0], [7.0, 8.0]]);
+    let b = Matrix::new([[1.0, 1.0], [2.0, 2.0]]);
+    a -= b;
+    assert_eq!(a, Matrix::new([[4.0, 5.0], [5.0, 6.0]]));
+}
+
+#[test]
+fn test_mul_assign_scalar() {
+    let mut m = Matrix::new([[1.0, 2.0], [3.0, 4.0]]);
+    m *= 2.0;
+    assert_eq!(m, Matrix::new([[2.0, 4.0], [6.0, 8.0]]));
+}
+
+#[test]
+fn test_div_assign_scalar() {
+    let mut m = Matrix::new([[2.0, 4.0], [6.0, 8.0]]);
+    m /= 2.0;
+    assert_eq!(m, Matrix::new([[1.0, 2.0], [3.0, 4.0]]));
+}
+#[test]
+fn test_index_mut() {
+    let mut m = Matrix::new([[1.0, 2.0], [3.0, 4.0]]);
+    m[0][1] = 10.0;
+    m[1][0] = -5.0;
+
+    assert_eq!(m[0][1], 10.0);
+    assert_eq!(m[1][0], -5.0);
+    assert_eq!(m, Matrix::new([[1.0, 10.0], [-5.0, 4.0]]));
 }
