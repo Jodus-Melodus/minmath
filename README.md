@@ -69,8 +69,6 @@ cargo add minmath
 
 - [Matrix](https://github.com/Jodus-Melodus/minmath/blob/master/README_MATRIX.md)
 - [Vector](https://github.com/Jodus-Melodus/minmath/blob/master/README_VECTOR.md)
-- Set theory
-- Probability
 
 ## License
 

@@ -1,5 +1,4 @@
 pub mod linear_algebra;
-pub mod set_theory;
 use std::{
     fmt::{Debug, Display},
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
