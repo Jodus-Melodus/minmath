@@ -22,23 +22,6 @@ PartialEq
 Eq
 ```
 
-To use all features, the vector's element type `T` should implement:
-
-```rust
-Add<Output = T>
-AddAssign
-Sub<Output = T>
-SubAssign
-Mul<Output = T>
-MulAssign
-Div<Output = T>
-DivAssign
-Copy
-Debug
-Display
-Default
-```
-
 ---
 
 ## Construction
@@ -46,14 +29,14 @@ Default
 ### Creating a Vector
 
 ```rust
-pub fn new(data: [T; SIZE]) -> Self
+pub fn new(data: [f32; SIZE]) -> Self
 ```
 
-Creates a new vector of type `T` and size `SIZE` from the provided array.
+Creates a new vector of type `f32` and size `SIZE` from the provided array.
 
 **Example:**
 ```rust
-let vec = Vector::new([4, -3, 2]);
+let vec = Vector::new([4.0, -3.0, 2.0]);
 ```
 
 ### Getting the Size
@@ -79,7 +62,7 @@ let size: usize = vec.size(); // 1
 Convert a vector to a column matrix:
 
 ```rust
-let vector = Vector::new([1, 2, 3]);
+let vector = Vector::new([1.0, 2.0, 3.0]);
 let matrix = vector.to_matrix();
 ```
 
@@ -102,10 +85,10 @@ All matrix sizes are supported by the operators (square and non-square).
 
 **Example:**
 ```rust
-let v1 = Vector::new([1, 2, 3]);
-let v2 = Vector::new([4, 5, 6]);
-let sum = v1 + v2; // [5, 7, 9]
-let scaled = v1 * 2; // [2, 4, 6]
+let v1 = Vector::new([1.0, 2.0, 3.0]);
+let v2 = Vector::new([4.0, 5.0, 6.0]);
+let sum = v1 + v2; // [5.0, 7.0, 9.0]
+let scaled = v1 * 2.0; // [2.0, 4.0, 6.0]
 ```
 
 ---
@@ -115,9 +98,9 @@ let scaled = v1 * 2; // [2, 4, 6]
 Calculate the dot product of two vectors:
 
 ```rust
-let vec1 = Vector::new([1, 2, 3]);
-let vec2 = Vector::new([4, 5, 6]);
-let dot_product = vec1.dot(vec2); // 32
+let vec1 = Vector::new([1.0, 2.0, 3.0]);
+let vec2 = Vector::new([4.0, 5.0, 6.0]);
+let dot_product = vec1.dot(vec2); // 32.0
 ```
 
 ---
@@ -127,9 +110,9 @@ let dot_product = vec1.dot(vec2); // 32
 The cross product is only implemented for 3D vectors.
 
 ```rust
-let vec1 = Vector::new([1, 2, 3]);
-let vec2 = Vector::new([4, 5, 6]);
-let cross_product = vec1.cross(vec2); // [-3, 6, -3]
+let vec1 = Vector::new([1.0, 2.0, 3.0]);
+let vec2 = Vector::new([4.0, 5.0, 6.0]);
+let cross_product = vec1.cross(vec2); // [-3.0, 6.0, -3.0]
 ```
 
 ---
@@ -145,9 +128,9 @@ To rotate a 2D vector by an angle θ (in radians), use `Matrix::rotation_matrix2
 ```rust
 use std::f32::consts::FRAC_PI_2; // 90 degrees
 
-let v = Vector::new([1.0_f32, 0.0]);
+let v = Vector::new([1.0, 0.0]);
 let m = v.to_matrix();
-let rotated = Matrix::<f32, 2, 2>::rotation_matrix2x2(FRAC_PI_2) * m;
+let rotated = Matrix::<2, 2>::rotation_matrix2x2(FRAC_PI_2) * m;
 let result = rotated.to_vector(); // result is approximately [0.0, 1.0]
 ```
 
@@ -158,7 +141,7 @@ let result = rotated.to_vector(); // result is approximately [0.0, 1.0]
   use std::f32::consts::PI;
   let v = Vector::new([1.0, 0.0]);
   let m = v.to_matrix();
-  let rotated = Matrix::<f32, 2, 2>::rotation_matrix2x2(PI) * m;
+  let rotated = Matrix::<2, 2>::rotation_matrix2x2(PI) * m;
   let result = rotated.to_vector(); // [-1.0, 0.0]
   ```
 
@@ -167,7 +150,7 @@ let result = rotated.to_vector(); // result is approximately [0.0, 1.0]
   use std::f32::consts::FRAC_PI_4;
   let v = Vector::new([1.0, 0.0]);
   let m = v.to_matrix();
-  let rotated = Matrix::<f32, 2, 2>::rotation_matrix2x2(FRAC_PI_4) * m;
+  let rotated = Matrix::<2, 2>::rotation_matrix2x2(FRAC_PI_4) * m;
   let result = rotated.to_vector(); // [sqrt(2)/2, sqrt(2)/2]
   ```
 
@@ -182,7 +165,7 @@ use std::f32::consts::FRAC_PI_2; // 90 degrees
 
 let v = Vector::new([1.0, 2.0, 3.0]);
 let m = v.to_matrix();
-let rotated = Matrix::<f32, 3, 3>::rotation_matrix3x3_x(FRAC_PI_2) * m;
+let rotated = Matrix::<3, 3>::rotation_matrix3x3_x(FRAC_PI_2) * m;
 let result = rotated.to_vector(); // [1.0, -3.0, 2.0]
 ```
 
@@ -193,7 +176,7 @@ use std::f32::consts::FRAC_PI_2; // 90 degrees
 
 let v = Vector::new([1.0, 2.0, 3.0]);
 let m = v.to_matrix();
-let rotated = Matrix::<f32, 3, 3>::rotation_matrix3x3_y(FRAC_PI_2) * m;
+let rotated = Matrix::<3, 3>::rotation_matrix3x3_y(FRAC_PI_2) * m;
 let result = rotated.to_vector(); // [3.0, 2.0, -1.0]
 ```
 
@@ -204,7 +187,7 @@ use std::f32::consts::FRAC_PI_2; // 90 degrees
 
 let v = Vector::new([1.0, 2.0, 3.0]);
 let m = v.to_matrix();
-let rotated = Matrix::<f32, 3, 3>::rotation_matrix3x3_z(FRAC_PI_2) * m;
+let rotated = Matrix::<3, 3>::rotation_matrix3x3_z(FRAC_PI_2) * m;
 let result = rotated.to_vector(); // [-2.0, 1.0, 3.0]
 ```
 

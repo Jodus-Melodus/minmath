@@ -21,23 +21,6 @@ PartialEq
 Eq
 ```
 
-To use all features, the matrix's element type `T` should implement:
-
-```rust
-Add<Output = T>
-AddAssign
-Sub<Output = T>
-SubAssign
-Mul<Output = T>
-MulAssign
-Div<Output = T>
-DivAssign
-Copy
-Debug
-Display
-Default
-```
-
 ---
 
 ## Construction
@@ -45,17 +28,17 @@ Default
 ### Creating a Matrix
 
 ```rust
-fn new(data: [[T; COLUMNS]; ROWS]) -> Matrix<T, ROWS, COLUMNS>
+fn new(data: [[f32; COLUMNS]; ROWS]) -> Matrix<ROWS, COLUMNS>
 ```
 
-Creates a new matrix of type `T` and size `(ROWS, COLUMNS)` from the provided 2D array.
+Creates a new matrix of type `f32` and size `(ROWS, COLUMNS)` from the provided 2D array.
 
 **Example:**
 ```rust
-let matrix: Matrix<i32, 3, 3> = Matrix::new([
-    [4, 3, 0],
-    [8, 3, 9],
-    [-2, 4, 2],
+let matrix: Matrix<3, 3> = Matrix::new([
+    [4.0, 3.0, 0.0],
+    [8.0, 3.0, 9.0],
+    [-2.0, 4.0, 2.0],
 ]);
 ```
 
@@ -66,12 +49,12 @@ let matrix: Matrix<i32, 3, 3> = Matrix::new([
 ### 2D Rotation Matrix
 
 ```rust
-pub fn rotation_matrix2x2(theta: f32) -> Matrix<f32, 2, 2>
+pub fn rotation_matrix2x2(theta: f32) -> Matrix<2, 2>
 ```
 Creates a 2D rotation matrix for angle `theta` (in radians):
 
 ```rust
-let rot = Matrix::<f32, 2, 2>::rotation_matrix2x2(std::f32::consts::FRAC_PI_2);
+let rot = Matrix::<2, 2>::rotation_matrix2x2(std::f32::consts::FRAC_PI_2);
 // Rotates vectors by 90 degrees counterclockwise
 ```
 
@@ -79,22 +62,22 @@ let rot = Matrix::<f32, 2, 2>::rotation_matrix2x2(std::f32::consts::FRAC_PI_2);
 
 - **About the X axis:**
   ```rust
-  pub fn rotation_matrix3x3_x(theta: f32) -> Matrix<f32, 3, 3>
+  pub fn rotation_matrix3x3_x(theta: f32) -> Matrix<3, 3>
   ```
 - **About the Y axis:**
   ```rust
-  pub fn rotation_matrix3x3_y(theta: f32) -> Matrix<f32, 3, 3>
+  pub fn rotation_matrix3x3_y(theta: f32) -> Matrix<3, 3>
   ```
 - **About the Z axis:**
   ```rust
-  pub fn rotation_matrix3x3_z(theta: f32) -> Matrix<f32, 3, 3>
+  pub fn rotation_matrix3x3_z(theta: f32) -> Matrix<3, 3>
   ```
 
 **Example:**
 ```rust
-let rot_x = Matrix::<f32, 3, 3>::rotation_matrix3x3_x(std::f32::consts::FRAC_PI_2);
-let rot_y = Matrix::<f32, 3, 3>::rotation_matrix3x3_y(std::f32::consts::FRAC_PI_2);
-let rot_z = Matrix::<f32, 3, 3>::rotation_matrix3x3_z(std::f32::consts::FRAC_PI_2);
+let rot_x = Matrix::<3, 3>::rotation_matrix3x3_x(std::f32::consts::FRAC_PI_2);
+let rot_y = Matrix::<3, 3>::rotation_matrix3x3_y(std::f32::consts::FRAC_PI_2);
+let rot_z = Matrix::<3, 3>::rotation_matrix3x3_z(std::f32::consts::FRAC_PI_2);
 ```
 
 ---
@@ -110,9 +93,9 @@ Returns the size of the matrix as `(rows, columns)`.
 
 **Example:**
 ```rust
-let matrix: Matrix<i32, 2, 3> = Matrix::new([
-    [4, 3, 0],
-    [8, 3, 9]
+let matrix: Matrix<2, 3> = Matrix::new([
+    [4.0, 3.0, 0.0],
+    [8.0, 3.0, 9.0]
 ]);
 let size = matrix.size(); // (2, 3)
 ```
@@ -126,11 +109,11 @@ Returns the determinant of the matrix (currently only for 2x2 matrices).
 
 **Example:**
 ```rust
-let matrix: Matrix<i32, 2, 2> = Matrix::new([
-    [4, -3],
-    [8, 3],
+let matrix: Matrix<2, 2> = Matrix::new([
+    [4.0, -3.0],
+    [8.0, 3.0],
 ]);
-let determinant = matrix.determinant(); // -36
+let determinant = matrix.determinant(); // -36.0
 ```
 
 ### Converting from Matrix to Vector
@@ -138,7 +121,7 @@ let determinant = matrix.determinant(); // -36
 Convert a column matrix to a vector:
 
 ```rust
-let matrix = Matrix::new([[1], [2], [3]]);
+let matrix = Matrix::new([[1.0], [2.0], [3.0]]);
 let vector = matrix.to_vector();
 ```
 
@@ -161,10 +144,10 @@ All matrix sizes are supported by the operators (square and non-square).
 
 **Example:**
 ```rust
-let a = Matrix::new([[1, 2], [3, 4]]);
-let b = Matrix::new([[5, 6], [7, 8]]);
-let sum = a + b; // [[6, 8], [10, 12]]
-let scaled = a * 2; // [[2, 4], [6, 8]]
+let a = Matrix::new([[1.0, 2.0], [3.0, 4.0]]);
+let b = Matrix::new([[5.0, 6.0], [7.0, 8.0]]);
+let sum = a + b; // [[6.0, 8.0], [10.0, 12.0]]
+let scaled = a * 2.0; // [[2.0, 4.0], [6.0, 8.0]]
 ```
 
 ---
@@ -174,9 +157,9 @@ let scaled = a * 2; // [[2, 4], [6, 8]]
 Matrix multiplication is supported for compatible sizes (inner dimensions must match):
 
 ```rust
-let a = Matrix::new([[1, 2, 3], [4, 5, 6]]);
-let b = Matrix::new([[7, 8], [9, 10], [11, 12]]);
-let c = a * b; // c is Matrix<i32, 2, 2>
+let a = Matrix::new([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]);
+let b = Matrix::new([[7.0, 8.0], [9.0, 10.0], [11.0, 12.0]]);
+let c = a * b; // c is Matrix<2, 2>
 ```
 
 ---

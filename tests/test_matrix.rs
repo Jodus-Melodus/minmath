@@ -1,10 +1,10 @@
 use minmath::linear_algebra::matrix::Matrix;
 
-fn matrix2x2_f32(data: [[f32; 2]; 2]) -> Matrix<f32, 2, 2> {
+fn matrix2x2_f32(data: [[f32; 2]; 2]) -> Matrix<2, 2> {
     Matrix::new(data)
 }
 
-fn matrix3x3_f32(data: [[f32; 3]; 3]) -> Matrix<f32, 3, 3> {
+fn matrix3x3_f32(data: [[f32; 3]; 3]) -> Matrix<3, 3> {
     Matrix::new(data)
 }
 
@@ -85,7 +85,7 @@ fn test_determinant() {
 #[test]
 fn test_rotation_matrix2x2() {
     let theta = std::f32::consts::FRAC_PI_2; // 90 degrees
-    let rot = Matrix::<f32, 2, 2>::rotation_matrix2x2(theta);
+    let rot = Matrix::<2, 2>::rotation_matrix2x2(theta);
     let expected = matrix2x2_f32([[0.0, -1.0], [1.0, 0.0]]);
     for r in 0..2 {
         for c in 0..2 {
@@ -97,7 +97,7 @@ fn test_rotation_matrix2x2() {
 #[test]
 fn test_rotation_matrix3x3_z() {
     let theta = std::f32::consts::FRAC_PI_2; // 90 degrees
-    let rot = Matrix::<f32, 3, 3>::rotation_matrix3x3_z(theta);
+    let rot = Matrix::<3, 3>::rotation_matrix3x3_z(theta);
     let expected = matrix3x3_f32([[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]]);
     for r in 0..3 {
         for c in 0..3 {
@@ -108,7 +108,7 @@ fn test_rotation_matrix3x3_z() {
 
 #[test]
 fn test_to_vector() {
-    let m = Matrix::<f32, 3, 1>::new([[1.0], [2.0], [3.0]]);
+    let m = Matrix::<3, 1>::new([[1.0], [2.0], [3.0]]);
     let v = m.to_vector();
     assert_eq!(v[0], 1.0);
     assert_eq!(v[1], 2.0);
@@ -118,7 +118,7 @@ fn test_to_vector() {
 #[test]
 #[should_panic(expected = "Matrix should only have one column")]
 fn test_to_vector_invalid() {
-    let m = Matrix::<f32, 2, 2>::new([[1.0, 2.0], [3.0, 4.0]]);
+    let m = Matrix::<2, 2>::new([[1.0, 2.0], [3.0, 4.0]]);
     let _ = m.to_vector(); // Should panic
 }
 
@@ -149,7 +149,7 @@ fn test_debug_format() {
 #[test]
 fn test_rotation_matrix3x3_x() {
     let theta = std::f32::consts::FRAC_PI_2; // 90 degrees
-    let rot = Matrix::<f32, 3, 3>::rotation_matrix3x3_x(theta);
+    let rot = Matrix::<3, 3>::rotation_matrix3x3_x(theta);
     let expected = Matrix::new([[1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [0.0, 1.0, 0.0]]);
 
     for r in 0..3 {
@@ -162,7 +162,7 @@ fn test_rotation_matrix3x3_x() {
 #[test]
 fn test_rotation_matrix3x3_y() {
     let theta = std::f32::consts::FRAC_PI_2; // 90 degrees
-    let rot = Matrix::<f32, 3, 3>::rotation_matrix3x3_y(theta);
+    let rot = Matrix::<3, 3>::rotation_matrix3x3_y(theta);
     let expected = Matrix::new([[0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0]]);
 
     for r in 0..3 {
