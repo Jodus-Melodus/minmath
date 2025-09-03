@@ -15,11 +15,9 @@
 ### Matrix
 
 ```rust
-use minmath::Matrix;
-
 fn main() {
-    let mat1 = Matrix::new([[1, 2], [3, 4]]);
-    let mat2 = Matrix::new([[5, 6], [7, 8]]);
+    let mat1 = Matrix::new([[1.0, 2.0], [3.0, 4.0]]);
+    let mat2 = Matrix::new([[5.0, 6.0], [7.0, 8.0]]);
     let mat3 = mat1 + mat2;
     println!("{}", mat3);
 }
@@ -28,11 +26,9 @@ fn main() {
 ### Vector
 
 ```rust
-use minmath::Vector;
-
 fn main() {
-    let vec1 = Vector::new([4, -3, 0]);
-    let vec2 = Vector::new([0, 3, 2]);
+    let vec1 = Vector::new([4.0, -3.0, 0.0]);
+    let vec2 = Vector::new([0.0, 3.0, 2.0]);
     let vec3 = vec1 + vec2;
     prinln!("{}", vec3);
 }

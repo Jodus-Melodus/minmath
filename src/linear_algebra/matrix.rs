@@ -4,37 +4,37 @@ use std::{
     ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign},
 };
 
-use crate::{Number, linear_algebra::vector::Vector};
+use crate::linear_algebra::vector::Vector;
 
 #[derive(Clone, Copy, PartialEq)]
-pub struct Matrix<T: Number, const ROWS: usize, const COLUMNS: usize> {
-    data: [[T; COLUMNS]; ROWS],
+pub struct Matrix<const ROWS: usize, const COLUMNS: usize> {
+    data: [[f32; COLUMNS]; ROWS],
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> Matrix<T, ROWS, COLUMNS> {
-    pub fn new(data: [[T; COLUMNS]; ROWS]) -> Self {
+impl<const ROWS: usize, const COLUMNS: usize> Matrix<ROWS, COLUMNS> {
+    pub fn new(data: [[f32; COLUMNS]; ROWS]) -> Self {
         Self { data }
     }
 
-    pub fn rotation_matrix2x2(theta: f32) -> Matrix<f32, 2, 2> {
+    pub fn rotation_matrix2x2(theta: f32) -> Matrix<2, 2> {
         Matrix::new([[theta.cos(), -theta.sin()], [theta.sin(), theta.cos()]])
     }
 
-    pub fn rotation_matrix3x3_x(theta: f32) -> Matrix<f32, 3, 3> {
+    pub fn rotation_matrix3x3_x(theta: f32) -> Matrix<3, 3> {
         Matrix::new([
             [1.0, 0.0, 0.0],
             [0.0, theta.cos(), -theta.sin()],
             [0.0, theta.sin(), theta.cos()],
         ])
     }
-    pub fn rotation_matrix3x3_y(theta: f32) -> Matrix<f32, 3, 3> {
+    pub fn rotation_matrix3x3_y(theta: f32) -> Matrix<3, 3> {
         Matrix::new([
             [theta.cos(), 0.0, theta.sin()],
             [0.0, 1.0, 0.0],
             [-theta.sin(), 0.0, theta.cos()],
         ])
     }
-    pub fn rotation_matrix3x3_z(theta: f32) -> Matrix<f32, 3, 3> {
+    pub fn rotation_matrix3x3_z(theta: f32) -> Matrix<3, 3> {
         Matrix::new([
             [theta.cos(), -theta.sin(), 0.0],
             [theta.sin(), theta.cos(), 0.0],
@@ -46,13 +46,13 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> Matrix<T, ROWS, COLUMNS
         (ROWS, COLUMNS)
     }
 
-    pub fn to_vector(&self) -> Vector<T, ROWS> {
+    pub fn to_vector(&self) -> Vector<ROWS> {
         assert_eq!(
             COLUMNS, 1,
             "Incorrect matrix dimension: Matrix should only have one column"
         );
 
-        let mut data = [T::default(); ROWS];
+        let mut data = [f32::default(); ROWS];
 
         for i in 0..ROWS {
             data[i] = self.data[i][0];
@@ -61,8 +61,8 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> Matrix<T, ROWS, COLUMNS
         Vector::new(data)
     }
 
-    pub fn transpose(&self) -> Matrix<T, COLUMNS, ROWS> {
-        let mut transposed = [[T::default(); ROWS]; COLUMNS];
+    pub fn transpose(&self) -> Matrix<COLUMNS, ROWS> {
+        let mut transposed = [[f32::default(); ROWS]; COLUMNS];
 
         for r in 0..ROWS {
             for c in 0..COLUMNS {
@@ -74,13 +74,13 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> Matrix<T, ROWS, COLUMNS
     }
 }
 
-impl<T: Number> Matrix<T, 2, 2> {
-    pub fn determinant(&self) -> T {
+impl Matrix<2, 2> {
+    pub fn determinant(&self) -> f32 {
         self.data[0][0] * self.data[1][1] - self.data[1][0] * self.data[0][1]
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> Add for Matrix<T, ROWS, COLUMNS> {
+impl<const ROWS: usize, const COLUMNS: usize> Add for Matrix<ROWS, COLUMNS> {
     type Output = Self;
     fn add(self, rhs: Self) -> Self::Output {
         let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] + rhs.data[r][c]));
@@ -89,16 +89,16 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> Add for Matrix<T, ROWS,
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> Add<T> for Matrix<T, ROWS, COLUMNS> {
+impl<const ROWS: usize, const COLUMNS: usize> Add<f32> for Matrix<ROWS, COLUMNS> {
     type Output = Self;
-    fn add(self, rhs: T) -> Self::Output {
+    fn add(self, rhs: f32) -> Self::Output {
         let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] + rhs));
 
         Self { data }
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> AddAssign for Matrix<T, ROWS, COLUMNS> {
+impl<const ROWS: usize, const COLUMNS: usize> AddAssign for Matrix<ROWS, COLUMNS> {
     fn add_assign(&mut self, rhs: Self) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
@@ -108,8 +108,8 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> AddAssign for Matrix<T,
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> AddAssign<T> for Matrix<T, ROWS, COLUMNS> {
-    fn add_assign(&mut self, rhs: T) {
+impl<const ROWS: usize, const COLUMNS: usize> AddAssign<f32> for Matrix<ROWS, COLUMNS> {
+    fn add_assign(&mut self, rhs: f32) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
                 self.data[r][c] += rhs;
@@ -118,7 +118,7 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> AddAssign<T> for Matrix
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> Sub for Matrix<T, ROWS, COLUMNS> {
+impl<const ROWS: usize, const COLUMNS: usize> Sub for Matrix<ROWS, COLUMNS> {
     type Output = Self;
     fn sub(self, rhs: Self) -> Self::Output {
         let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] - rhs.data[r][c]));
@@ -127,16 +127,16 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> Sub for Matrix<T, ROWS,
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> Sub<T> for Matrix<T, ROWS, COLUMNS> {
+impl<const ROWS: usize, const COLUMNS: usize> Sub<f32> for Matrix<ROWS, COLUMNS> {
     type Output = Self;
-    fn sub(self, rhs: T) -> Self::Output {
+    fn sub(self, rhs: f32) -> Self::Output {
         let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] - rhs));
 
         Self { data }
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> SubAssign for Matrix<T, ROWS, COLUMNS> {
+impl<const ROWS: usize, const COLUMNS: usize> SubAssign for Matrix<ROWS, COLUMNS> {
     fn sub_assign(&mut self, rhs: Self) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
@@ -146,8 +146,8 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> SubAssign for Matrix<T,
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> SubAssign<T> for Matrix<T, ROWS, COLUMNS> {
-    fn sub_assign(&mut self, rhs: T) {
+impl<const ROWS: usize, const COLUMNS: usize> SubAssign<f32> for Matrix<ROWS, COLUMNS> {
+    fn sub_assign(&mut self, rhs: f32) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
                 self.data[r][c] -= rhs;
@@ -156,16 +156,11 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> SubAssign<T> for Matrix
     }
 }
 
-impl<
-    T: Number,
-    const LROWS: usize,
-    const LCOLUMNS: usize,
-    const RROWS: usize,
-    const RCOLUMNS: usize,
-> Mul<Matrix<T, RROWS, RCOLUMNS>> for Matrix<T, LROWS, LCOLUMNS>
+impl<const LROWS: usize, const LCOLUMNS: usize, const RROWS: usize, const RCOLUMNS: usize>
+    Mul<Matrix<RROWS, RCOLUMNS>> for Matrix<LROWS, LCOLUMNS>
 {
-    type Output = Matrix<T, LROWS, RCOLUMNS>;
-    fn mul(self, rhs: Matrix<T, RROWS, RCOLUMNS>) -> Self::Output {
+    type Output = Matrix<LROWS, RCOLUMNS>;
+    fn mul(self, rhs: Matrix<RROWS, RCOLUMNS>) -> Self::Output {
         assert_eq!(
             LCOLUMNS, RROWS,
             "Matrix dimension mismatch: Expected left matrix with shape (a * b) and right matrix with shape (b * c), \
@@ -173,11 +168,11 @@ impl<
             LCOLUMNS, RROWS
         );
 
-        let mut data = [[T::default(); RCOLUMNS]; LROWS];
+        let mut data = [[f32::default(); RCOLUMNS]; LROWS];
 
         for i in 0..LROWS {
             for j in 0..RCOLUMNS {
-                let mut sum = T::default();
+                let mut sum = f32::default();
                 for k in 0..LCOLUMNS {
                     sum = sum + (self.data[i][k] * rhs.data[k][j]);
                 }
@@ -189,16 +184,16 @@ impl<
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> Mul<T> for Matrix<T, ROWS, COLUMNS> {
+impl<const ROWS: usize, const COLUMNS: usize> Mul<f32> for Matrix<ROWS, COLUMNS> {
     type Output = Self;
-    fn mul(self, rhs: T) -> Self::Output {
+    fn mul(self, rhs: f32) -> Self::Output {
         let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] * rhs));
 
         Self { data }
     }
 }
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> MulAssign<T> for Matrix<T, ROWS, COLUMNS> {
-    fn mul_assign(&mut self, rhs: T) {
+impl<const ROWS: usize, const COLUMNS: usize> MulAssign<f32> for Matrix<ROWS, COLUMNS> {
+    fn mul_assign(&mut self, rhs: f32) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
                 self.data[r][c] *= rhs;
@@ -207,16 +202,16 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> MulAssign<T> for Matrix
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> Div<T> for Matrix<T, ROWS, COLUMNS> {
+impl<const ROWS: usize, const COLUMNS: usize> Div<f32> for Matrix<ROWS, COLUMNS> {
     type Output = Self;
-    fn div(self, rhs: T) -> Self::Output {
+    fn div(self, rhs: f32) -> Self::Output {
         let data = array::from_fn(|r| array::from_fn(|c| self.data[r][c] / rhs));
 
         Self { data }
     }
 }
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> DivAssign<T> for Matrix<T, ROWS, COLUMNS> {
-    fn div_assign(&mut self, rhs: T) {
+impl<const ROWS: usize, const COLUMNS: usize> DivAssign<f32> for Matrix<ROWS, COLUMNS> {
+    fn div_assign(&mut self, rhs: f32) {
         for r in 0..ROWS {
             for c in 0..COLUMNS {
                 self.data[r][c] /= rhs;
@@ -225,7 +220,7 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> DivAssign<T> for Matrix
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> Debug for Matrix<T, ROWS, COLUMNS> {
+impl<const ROWS: usize, const COLUMNS: usize> Debug for Matrix<ROWS, COLUMNS> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(f, "Matrix ({}x{}):", ROWS, COLUMNS)?;
         for r in 0..ROWS {
@@ -238,7 +233,7 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> Debug for Matrix<T, ROW
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> Display for Matrix<T, ROWS, COLUMNS> {
+impl<const ROWS: usize, const COLUMNS: usize> Display for Matrix<ROWS, COLUMNS> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(f, "Matrix ({}x{}):", ROWS, COLUMNS)?;
         for r in 0..ROWS {
@@ -251,16 +246,14 @@ impl<T: Number, const ROWS: usize, const COLUMNS: usize> Display for Matrix<T, R
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> Index<usize> for Matrix<T, ROWS, COLUMNS> {
-    type Output = [T; COLUMNS];
+impl<const ROWS: usize, const COLUMNS: usize> Index<usize> for Matrix<ROWS, COLUMNS> {
+    type Output = [f32; COLUMNS];
     fn index(&self, row: usize) -> &Self::Output {
         &self.data[row]
     }
 }
 
-impl<T: Number, const ROWS: usize, const COLUMNS: usize> IndexMut<usize>
-    for Matrix<T, ROWS, COLUMNS>
-{
+impl<const ROWS: usize, const COLUMNS: usize> IndexMut<usize> for Matrix<ROWS, COLUMNS> {
     fn index_mut(&mut self, row: usize) -> &mut Self::Output {
         &mut self.data[row]
     }
