@@ -1,4 +1,9 @@
-use minmath::linear_algebra::matrix::Matrix;
+use std::f32::consts::FRAC_PI_2;
+
+use minmath::linear_algebra::{
+    matrix::Matrix,
+    vector::{Vector2, Vector3},
+};
 
 fn matrix2x2_f32(data: [[f32; 2]; 2]) -> Matrix<2, 2> {
     Matrix::new(data)
@@ -207,4 +212,55 @@ fn test_index_mut() {
     assert_eq!(m[0][1], 10.0);
     assert_eq!(m[1][0], -5.0);
     assert_eq!(m, Matrix::new([[1.0, 10.0], [-5.0, 4.0]]));
+}
+
+#[test]
+fn test_vector2_rotation_90_degrees() {
+    let v = Vector2::new(1.0, 0.0);
+    let m = v.to_matrix();
+    let rot = Matrix::<2, 2>::rotation_matrix2x2(FRAC_PI_2);
+    let rotated = rot * m;
+    let result = rotated.to_vector2();
+
+    assert!((result.x - 0.0).abs() < 1e-5);
+    assert!((result.y - 1.0).abs() < 1e-5);
+}
+
+#[test]
+fn test_vector3_rotation_x_axis_90_degrees() {
+    let v = Vector3::new(0.0, 1.0, 0.0);
+    let m = v.to_matrix();
+    let rot = Matrix::<3, 3>::rotation_matrix3x3_x(FRAC_PI_2);
+    let rotated = rot * m;
+    let result = rotated.to_vector3();
+
+    assert!((result.x - 0.0).abs() < 1e-5);
+    assert!((result.y - 0.0).abs() < 1e-5);
+    assert!((result.z - 1.0).abs() < 1e-5);
+}
+
+#[test]
+fn test_vector3_rotation_y_axis_90_degrees() {
+    let v = Vector3::new(0.0, 0.0, 1.0);
+    let m = v.to_matrix();
+    let rot = Matrix::<3, 3>::rotation_matrix3x3_y(FRAC_PI_2);
+    let rotated = rot * m;
+    let result = rotated.to_vector3();
+
+    assert!((result.x - 1.0).abs() < 1e-5);
+    assert!((result.y - 0.0).abs() < 1e-5);
+    assert!((result.z - 0.0).abs() < 1e-5);
+}
+
+#[test]
+fn test_vector3_rotation_z_axis_90_degrees() {
+    let v = Vector3::new(1.0, 0.0, 0.0);
+    let m = v.to_matrix();
+    let rot = Matrix::<3, 3>::rotation_matrix3x3_z(FRAC_PI_2);
+    let rotated = rot * m;
+    let result = rotated.to_vector3();
+
+    assert!((result.x - 0.0).abs() < 1e-5);
+    assert!((result.y - 1.0).abs() < 1e-5);
+    assert!((result.z - 0.0).abs() < 1e-5);
 }

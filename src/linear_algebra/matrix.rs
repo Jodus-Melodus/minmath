@@ -4,6 +4,8 @@ use std::{
     ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign},
 };
 
+use crate::linear_algebra::vector::{Vector2, Vector3};
+
 #[derive(Clone, Copy, PartialEq)]
 pub struct Matrix<const ROWS: usize, const COLUMNS: usize> {
     data: [[f32; COLUMNS]; ROWS],
@@ -54,6 +56,18 @@ impl<const ROWS: usize, const COLUMNS: usize> Matrix<ROWS, COLUMNS> {
         }
 
         Matrix::new(transposed)
+    }
+
+    pub fn to_vector2(&self) -> Vector2 {
+        assert_eq!(ROWS, 2, "Expected a matrix with 2 rows");
+        assert_eq!(COLUMNS, 1, "Expected a matrix with 1 column");
+        Vector2::new(self.data[0][0], self.data[1][0])
+    }
+
+    pub fn to_vector3(&self) -> Vector3 {
+        assert_eq!(ROWS, 3, "Expected a matrix with 3 rows");
+        assert_eq!(COLUMNS, 1, "Expected a matrix with 1 column");
+        Vector3::new(self.data[0][0], self.data[1][0], self.data[2][0])
     }
 }
 
