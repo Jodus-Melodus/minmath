@@ -4,8 +4,6 @@ use std::{
     ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign},
 };
 
-use crate::linear_algebra::vector::Vector;
-
 #[derive(Clone, Copy, PartialEq)]
 pub struct Matrix<const ROWS: usize, const COLUMNS: usize> {
     data: [[f32; COLUMNS]; ROWS],
@@ -44,21 +42,6 @@ impl<const ROWS: usize, const COLUMNS: usize> Matrix<ROWS, COLUMNS> {
 
     pub fn size(&self) -> (usize, usize) {
         (ROWS, COLUMNS)
-    }
-
-    pub fn to_vector(&self) -> Vector<ROWS> {
-        assert_eq!(
-            COLUMNS, 1,
-            "Incorrect matrix dimension: Matrix should only have one column"
-        );
-
-        let mut data = [f32::default(); ROWS];
-
-        for i in 0..ROWS {
-            data[i] = self.data[i][0];
-        }
-
-        Vector::new(data)
     }
 
     pub fn transpose(&self) -> Matrix<COLUMNS, ROWS> {

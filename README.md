@@ -23,14 +23,12 @@ fn main() {
 }
 ```
 
-### Vector
+### Vector2/Vector3
 
 ```rust
 fn main() {
-    let vec1 = Vector::new([4.0, -3.0, 0.0]);
-    let vec2 = Vector::new([0.0, 3.0, 2.0]);
-    let vec3 = vec1 + vec2;
-    prinln!("{}", vec3);
+    let vec2 = Vector2::new(4.0, 3.5);
+    let vec3 = Vector3::new(5.5, 9.0, -8.0);
 }
 ```
 

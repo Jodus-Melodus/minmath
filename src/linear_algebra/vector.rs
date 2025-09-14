@@ -1,200 +1,271 @@
 use std::{
-    fmt::{Debug, Display, Formatter, Result},
-    ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign},
+    fmt::Debug,
+    ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
 };
 
 use crate::linear_algebra::matrix::Matrix;
 
-#[derive(Clone, Copy, PartialEq)]
-pub struct Vector<const SIZE: usize> {
-    pub data: [f32; SIZE],
+#[derive(Clone, Copy, PartialEq, Debug)]
+pub struct Vector2 {
+    pub x: f32,
+    pub y: f32,
 }
 
-impl<const SIZE: usize> Vector<SIZE> {
-    pub fn new(data: [f32; SIZE]) -> Self {
-        Self { data }
+impl Vector2 {
+    pub fn new(x: f32, y: f32) -> Self {
+        Self { x, y }
     }
 
-    pub fn size(&self) -> usize {
-        SIZE
-    }
-
-    pub fn to_matrix(&self) -> Matrix<SIZE, 1> {
-        let mut data = [[f32::default(); 1]; SIZE];
-
-        for i in 0..SIZE {
-            data[i][0] = self.data[i];
-        }
-
-        Matrix::new(data)
+    pub fn to_matrix(&self) -> Matrix<2, 1> {
+        Matrix::new([[self.x], [self.y]])
     }
 
     pub fn dot(&self, rhs: Self) -> f32 {
-        let mut result = f32::default();
-        for i in 0..SIZE {
-            result += self.data[i] * rhs.data[i];
-        }
-        result
+        self.x * rhs.x + self.y * rhs.y
     }
 }
 
-impl Vector<3> {
-    pub fn cross(&self, rhs: Self) -> Self {
-        Vector::new([
-            self.data[1] * rhs.data[2] - self.data[2] * rhs.data[1],
-            self.data[2] * rhs.data[0] - self.data[0] * rhs.data[2],
-            self.data[0] * rhs.data[1] - self.data[1] * rhs.data[0],
-        ])
-    }
-}
-
-impl<const SIZE: usize> Add for Vector<SIZE> {
+impl Add for Vector2 {
     type Output = Self;
     fn add(self, rhs: Self) -> Self::Output {
-        let mut result = self.data;
-        for i in 0..SIZE {
-            result[i] += rhs.data[i];
+        Self {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
         }
-        Vector::new(result)
     }
 }
 
-impl<const SIZE: usize> Add<f32> for Vector<SIZE> {
+impl Add<f32> for Vector2 {
     type Output = Self;
     fn add(self, rhs: f32) -> Self::Output {
-        let mut result = self.data;
-        for i in 0..SIZE {
-            result[i] += rhs;
+        Self {
+            x: self.x + rhs,
+            y: self.y + rhs,
         }
-        Vector::new(result)
     }
 }
 
-impl<const SIZE: usize> AddAssign for Vector<SIZE> {
+impl AddAssign for Vector2 {
     fn add_assign(&mut self, rhs: Self) {
-        for i in 0..SIZE {
-            self.data[i] += rhs.data[i];
-        }
+        self.x += rhs.x;
+        self.y += rhs.y;
     }
 }
 
-impl<const SIZE: usize> AddAssign<f32> for Vector<SIZE> {
+impl AddAssign<f32> for Vector2 {
     fn add_assign(&mut self, rhs: f32) {
-        for i in 0..SIZE {
-            self.data[i] += rhs;
-        }
+        self.x += rhs;
+        self.y += rhs;
     }
 }
-impl<const SIZE: usize> Sub for Vector<SIZE> {
+
+impl Sub for Vector2 {
     type Output = Self;
     fn sub(self, rhs: Self) -> Self::Output {
-        let mut result = self.data;
-        for i in 0..SIZE {
-            result[i] -= rhs.data[i];
+        Self {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
         }
-        Vector::new(result)
     }
 }
 
-impl<const SIZE: usize> Sub<f32> for Vector<SIZE> {
+impl Sub<f32> for Vector2 {
     type Output = Self;
     fn sub(self, rhs: f32) -> Self::Output {
-        let mut result = self.data;
-        for i in 0..SIZE {
-            result[i] -= rhs;
+        Self {
+            x: self.x - rhs,
+            y: self.y - rhs,
         }
-        Vector::new(result)
     }
 }
 
-impl<const SIZE: usize> SubAssign for Vector<SIZE> {
+impl SubAssign for Vector2 {
     fn sub_assign(&mut self, rhs: Self) {
-        for i in 0..SIZE {
-            self.data[i] -= rhs.data[i];
-        }
+        self.x -= rhs.x;
+        self.y -= rhs.y;
     }
 }
 
-impl<const SIZE: usize> SubAssign<f32> for Vector<SIZE> {
+impl SubAssign<f32> for Vector2 {
     fn sub_assign(&mut self, rhs: f32) {
-        for i in 0..SIZE {
-            self.data[i] -= rhs;
-        }
+        self.x -= rhs;
+        self.y -= rhs;
     }
 }
 
-impl<const SIZE: usize> Mul<f32> for Vector<SIZE> {
+impl Mul<f32> for Vector2 {
     type Output = Self;
     fn mul(self, rhs: f32) -> Self::Output {
-        let mut result = self.data;
-        for i in 0..SIZE {
-            result[i] *= rhs;
+        Self {
+            x: self.x * rhs,
+            y: self.y * rhs,
         }
-        Vector::new(result)
     }
 }
 
-impl<const SIZE: usize> MulAssign<f32> for Vector<SIZE> {
+impl MulAssign<f32> for Vector2 {
     fn mul_assign(&mut self, rhs: f32) {
-        for i in 0..SIZE {
-            self.data[i] *= rhs;
-        }
+        self.x *= rhs;
+        self.y *= rhs;
     }
 }
 
-impl<const SIZE: usize> Div<f32> for Vector<SIZE> {
+impl Div<f32> for Vector2 {
     type Output = Self;
     fn div(self, rhs: f32) -> Self::Output {
-        let mut result = self.data;
-        for i in 0..SIZE {
-            result[i] /= rhs;
+        Self {
+            x: self.x / rhs,
+            y: self.y / rhs,
         }
-        Vector::new(result)
     }
 }
 
-impl<const SIZE: usize> DivAssign<f32> for Vector<SIZE> {
+impl DivAssign<f32> for Vector2 {
     fn div_assign(&mut self, rhs: f32) {
-        for i in 0..SIZE {
-            self.data[i] /= rhs;
+        self.x /= rhs;
+        self.y /= rhs;
+    }
+}
+
+#[derive(Clone, Copy, PartialEq, Debug)]
+pub struct Vector3 {
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
+}
+
+impl Vector3 {
+    pub fn new(x: f32, y: f32, z: f32) -> Self {
+        Self { x, y, z }
+    }
+
+    pub fn to_matrix(&self) -> Matrix<3, 1> {
+        Matrix::new([[self.x], [self.y], [self.z]])
+    }
+
+    pub fn dot(&self, rhs: Self) -> f32 {
+        self.x * rhs.x + self.y * rhs.y + self.z * rhs.z
+    }
+
+    pub fn cross(&self, rhs: Self) -> Self {
+        Self {
+            x: self.y * rhs.z - self.z * rhs.y,
+            y: self.z * rhs.x - self.x * rhs.z,
+            z: self.x * rhs.y - self.y * rhs.x,
         }
     }
 }
 
-impl<const SIZE: usize> Debug for Vector<SIZE> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        writeln!(f, "Vector ({}):", SIZE)?;
-        let formatted = self
-            .data
-            .iter()
-            .map(|v| format!("{:?}", v))
-            .collect::<Vec<_>>()
-            .join(", ");
-        write!(f, "[{}]", formatted)
+impl Add for Vector3 {
+    type Output = Self;
+    fn add(self, rhs: Self) -> Self::Output {
+        Self {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
+        }
     }
 }
 
-impl<const SIZE: usize> Display for Vector<SIZE> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        writeln!(f, "Vector ({}):", SIZE)?;
-        let formatted = self
-            .data
-            .iter()
-            .map(|v| format!("{}", v))
-            .collect::<Vec<_>>()
-            .join(", ");
-        write!(f, "[{}]", formatted)
+impl Add<f32> for Vector3 {
+    type Output = Self;
+    fn add(self, rhs: f32) -> Self::Output {
+        Self {
+            x: self.x + rhs,
+            y: self.y + rhs,
+            z: self.z + rhs,
+        }
     }
 }
 
-impl<const SIZE: usize> Index<usize> for Vector<SIZE> {
-    type Output = f32;
-    fn index(&self, idx: usize) -> &Self::Output {
-        &self.data[idx]
+impl AddAssign for Vector3 {
+    fn add_assign(&mut self, rhs: Self) {
+        self.x += rhs.x;
+        self.y += rhs.y;
+        self.z += rhs.z;
     }
 }
-impl<const SIZE: usize> IndexMut<usize> for Vector<SIZE> {
-    fn index_mut(&mut self, idx: usize) -> &mut Self::Output {
-        &mut self.data[idx]
+
+impl AddAssign<f32> for Vector3 {
+    fn add_assign(&mut self, rhs: f32) {
+        self.x += rhs;
+        self.y += rhs;
+        self.z += rhs;
+    }
+}
+
+impl Sub for Vector3 {
+    type Output = Self;
+    fn sub(self, rhs: Self) -> Self::Output {
+        Self {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+        }
+    }
+}
+
+impl Sub<f32> for Vector3 {
+    type Output = Self;
+    fn sub(self, rhs: f32) -> Self::Output {
+        Self {
+            x: self.x - rhs,
+            y: self.y - rhs,
+            z: self.z - rhs,
+        }
+    }
+}
+
+impl SubAssign for Vector3 {
+    fn sub_assign(&mut self, rhs: Self) {
+        self.x -= rhs.x;
+        self.y -= rhs.y;
+        self.z -= rhs.z;
+    }
+}
+
+impl SubAssign<f32> for Vector3 {
+    fn sub_assign(&mut self, rhs: f32) {
+        self.x -= rhs;
+        self.y -= rhs;
+        self.z -= rhs;
+    }
+}
+
+impl Mul<f32> for Vector3 {
+    type Output = Self;
+    fn mul(self, rhs: f32) -> Self::Output {
+        Self {
+            x: self.x * rhs,
+            y: self.y * rhs,
+            z: self.z * rhs,
+        }
+    }
+}
+
+impl MulAssign<f32> for Vector3 {
+    fn mul_assign(&mut self, rhs: f32) {
+        self.x *= rhs;
+        self.y *= rhs;
+        self.z *= rhs;
+    }
+}
+
+impl Div<f32> for Vector3 {
+    type Output = Self;
+    fn div(self, rhs: f32) -> Self::Output {
+        Self {
+            x: self.x / rhs,
+            y: self.y / rhs,
+            z: self.z / rhs,
+        }
+    }
+}
+
+impl DivAssign<f32> for Vector3 {
+    fn div_assign(&mut self, rhs: f32) {
+        self.x /= rhs;
+        self.y /= rhs;
+        self.z /= rhs;
     }
 }

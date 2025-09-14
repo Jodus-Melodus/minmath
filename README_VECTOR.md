@@ -28,49 +28,35 @@ Eq
 
 ### Creating a Vector
 
+#### Vector2
+
 ```rust
-pub fn new(data: [f32; SIZE]) -> Self
+pub fn new(x: f32, y: f32) -> Self
 ```
 
-Creates a new vector of type `f32` and size `SIZE` from the provided array.
+Creates a new vector2 of type `f32`.
 
 **Example:**
 ```rust
-let vec = Vector::new([4.0, -3.0, 2.0]);
+let vec = Vector2::new(4.0, -3.0);
 ```
 
-### Getting the Size
+#### Vector3
 
 ```rust
-pub fn size(&self) -> usize
+pub fn new(x: f32, y: f32, z: f32) -> Self
 ```
 
-Returns the size of the vector.
+Creates a new vector3 of type `f32`.
 
 **Example:**
 ```rust
-let vec = Vector::new([4]);
-let size: usize = vec.size(); // 1
-```
-
----
-
-## Conversion
-
-### Vector to Matrix
-
-Convert a vector to a column matrix:
-
-```rust
-let vector = Vector::new([1.0, 2.0, 3.0]);
-let matrix = vector.to_matrix();
+let vec = Vector3::new(4.0, -3.0, 9.0);
 ```
 
 ---
 
 ## Operators
-
-All matrix sizes are supported by the operators (square and non-square).
 
 | Operation         | With Scalar | With Vector |
 |-------------------|:-----------:|:-----------:|
@@ -85,8 +71,8 @@ All matrix sizes are supported by the operators (square and non-square).
 
 **Example:**
 ```rust
-let v1 = Vector::new([1.0, 2.0, 3.0]);
-let v2 = Vector::new([4.0, 5.0, 6.0]);
+let v1 = Vector3::new(1.0, 2.0, 3.0);
+let v2 = Vector3::new(4.0, 5.0, 6.0);
 let sum = v1 + v2; // [5.0, 7.0, 9.0]
 let scaled = v1 * 2.0; // [2.0, 4.0, 6.0]
 ```
@@ -98,8 +84,8 @@ let scaled = v1 * 2.0; // [2.0, 4.0, 6.0]
 Calculate the dot product of two vectors:
 
 ```rust
-let vec1 = Vector::new([1.0, 2.0, 3.0]);
-let vec2 = Vector::new([4.0, 5.0, 6.0]);
+let vec1 = Vector3::new(1.0, 2.0, 3.0);
+let vec2 = Vector3::new(4.0, 5.0, 6.0);
 let dot_product = vec1.dot(vec2); // 32.0
 ```
 
@@ -110,94 +96,10 @@ let dot_product = vec1.dot(vec2); // 32.0
 The cross product is only implemented for 3D vectors.
 
 ```rust
-let vec1 = Vector::new([1.0, 2.0, 3.0]);
-let vec2 = Vector::new([4.0, 5.0, 6.0]);
+let vec1 = Vector3::new(1.0, 2.0, 3.0);
+let vec2 = Vector3::new(4.0, 5.0, 6.0);
 let cross_product = vec1.cross(vec2); // [-3.0, 6.0, -3.0]
 ```
-
----
-
-## Rotating Vectors
-
-You can rotate 2D and 3D vectors using the provided rotation matrix constructors and the `to_matrix()` and `to_vector()` conversion methods.
-
-### 2D Rotation
-
-To rotate a 2D vector by an angle θ (in radians), use `Matrix::rotation_matrix2x2`:
-
-```rust
-use std::f32::consts::FRAC_PI_2; // 90 degrees
-
-let v = Vector::new([1.0, 0.0]);
-let m = v.to_matrix();
-let rotated = Matrix::<2, 2>::rotation_matrix2x2(FRAC_PI_2) * m;
-let result = rotated.to_vector(); // result is approximately [0.0, 1.0]
-```
-
-#### More 2D Examples
-
-- **180° rotation:**
-  ```rust
-  use std::f32::consts::PI;
-  let v = Vector::new([1.0, 0.0]);
-  let m = v.to_matrix();
-  let rotated = Matrix::<2, 2>::rotation_matrix2x2(PI) * m;
-  let result = rotated.to_vector(); // [-1.0, 0.0]
-  ```
-
-- **45° rotation:**
-  ```rust
-  use std::f32::consts::FRAC_PI_4;
-  let v = Vector::new([1.0, 0.0]);
-  let m = v.to_matrix();
-  let rotated = Matrix::<2, 2>::rotation_matrix2x2(FRAC_PI_4) * m;
-  let result = rotated.to_vector(); // [sqrt(2)/2, sqrt(2)/2]
-  ```
-
-### 3D Rotation
-
-To rotate a 3D vector about the X, Y, or Z axis by an angle θ (in radians), use the corresponding rotation matrix:
-
-#### About the X axis
-
-```rust
-use std::f32::consts::FRAC_PI_2; // 90 degrees
-
-let v = Vector::new([1.0, 2.0, 3.0]);
-let m = v.to_matrix();
-let rotated = Matrix::<3, 3>::rotation_matrix3x3_x(FRAC_PI_2) * m;
-let result = rotated.to_vector(); // [1.0, -3.0, 2.0]
-```
-
-#### About the Y axis
-
-```rust
-use std::f32::consts::FRAC_PI_2; // 90 degrees
-
-let v = Vector::new([1.0, 2.0, 3.0]);
-let m = v.to_matrix();
-let rotated = Matrix::<3, 3>::rotation_matrix3x3_y(FRAC_PI_2) * m;
-let result = rotated.to_vector(); // [3.0, 2.0, -1.0]
-```
-
-#### About the Z axis
-
-```rust
-use std::f32::consts::FRAC_PI_2; // 90 degrees
-
-let v = Vector::new([1.0, 2.0, 3.0]);
-let m = v.to_matrix();
-let rotated = Matrix::<3, 3>::rotation_matrix3x3_z(FRAC_PI_2) * m;
-let result = rotated.to_vector(); // [-2.0, 1.0, 3.0]
-```
-
----
-
-## Notes
-
-- All angles are in radians.
-- For 2D, use `rotation_matrix2x2`. For 3D, use the axis-specific rotation matrix.
-- The result of a rotation is a new `Vector` containing the rotated coordinates.
 
 ---
 

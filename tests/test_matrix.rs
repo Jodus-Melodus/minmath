@@ -107,22 +107,6 @@ fn test_rotation_matrix3x3_z() {
 }
 
 #[test]
-fn test_to_vector() {
-    let m = Matrix::<3, 1>::new([[1.0], [2.0], [3.0]]);
-    let v = m.to_vector();
-    assert_eq!(v[0], 1.0);
-    assert_eq!(v[1], 2.0);
-    assert_eq!(v[2], 3.0);
-}
-
-#[test]
-#[should_panic(expected = "Matrix should only have one column")]
-fn test_to_vector_invalid() {
-    let m = Matrix::<2, 2>::new([[1.0, 2.0], [3.0, 4.0]]);
-    let _ = m.to_vector(); // Should panic
-}
-
-#[test]
 fn test_size() {
     let m = matrix2x2_f32([[1.0, 2.0], [3.0, 4.0]]);
     assert_eq!(m.size(), (2, 2));
